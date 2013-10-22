@@ -52,13 +52,27 @@
       <version>4.8.1</version>
       <scope>test</scope>
     </dependency>
-    
+    <dependency>
+    	<groupId>org.scalamock</groupId>
+    	<artifactId>scalamock-scalatest-support_2.10</artifactId>
+    	<version>3.0.1</version>
+	</dependency>
     <dependency>
       <groupId>org.scalatest</groupId>
       <artifactId>scalatest_2.10</artifactId>
       <version>1.9.2</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+    	<groupId>com.google.inject</groupId>
+    	<artifactId>guice</artifactId>
+    	<version>4.0-beta</version>
+ 	</dependency>
+	<dependency>
+    	<groupId>org.scalamock</groupId>
+    	<artifactId>scalamock-core_2.10</artifactId>
+    	<version>3.0.1</version>
+	</dependency>
   </dependencies>
 
   <build>

@@ -6,7 +6,7 @@ import javax.sound.midi.Transmitter
 import javax.sound.midi.MidiSystem
 import javax.sound.midi.MidiDevice
 import javax.sound.midi.MidiUnavailableException
-import org.kylerow.midi.{midiReceiver,transmitters}
+import org.kylerow.midi.Midi
 
 case class Note(noteVal :Int);
 
@@ -17,17 +17,16 @@ case class Note(noteVal :Int);
  * @author KyleRow
  */
 
-object ScalaSynth {
+object ScalaSynth extends Injectable {
   
   def receptacle (message :MidiMessage) = 
     println("midi received: "+message.toString);
   
-  def connect (tx :List[Transmitter], rx :Receiver) = 
-    tx.filter(_!=null).foreach({ _.setReceiver(rx)});
-  
   def main(args : Array[String]) {
+    var midi = Midi()
+    
     println("Connecting to All Virtual Midi...")
-    connect (transmitters(), midiReceiver(receptacle))
+    midi >>> receptacle
     
     println("Running...")
     while(true){

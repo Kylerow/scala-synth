@@ -7,6 +7,8 @@ import org.junit.runner.RunWith
 import org.scalatest.FlatSpec
 import org.scalatest.junit.JUnitRunner
 import org.scalamock.scalatest.MockFactory
+import javax.sound.midi.MidiSystem
+import org.scalamock.scalatest.MockFactory
 
 @RunWith(classOf[JUnitRunner])
 class ScalaSynthIntegrationTest 
@@ -16,14 +18,16 @@ class ScalaSynthIntegrationTest
   "scala-synth" should "send midi messages to the receiver" in
   {
     // arrange
-    // *** TODO: set up origination of midi data
-    val mockedReceiverFunction  = mockFunction[MidiMessage,Unit];
+	var syn = MidiSystem.getSynthesizer();
+	syn.open();
+	val mc = syn.getChannels();
+    val mockedReceiverFunction  = MockFactory.mockFunction[MidiMessage,Unit];
     
     var midi = Midi()
     midi >>> mockedReceiverFunction
     
     // act
-    // *** TODO: do midi stuff
+    mc[5].noteOn(50,1000);
     
     // assert
     mockedReceiverFunction expects (new MidiMessage());

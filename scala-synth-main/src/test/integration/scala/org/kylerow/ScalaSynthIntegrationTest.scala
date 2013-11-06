@@ -1,12 +1,8 @@
 package org.kylerow
-
-import org.kylerow.midi.Midi
-import javax.sound.midi.MidiMessage
 import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
 import org.scalatest.FlatSpec
 import org.scalatest.junit.JUnitRunner
-import org.scalamock.scalatest.MockFactory
 import javax.sound.midi.MidiSystem
 import org.scalamock.scalatest.MockFactory
 
@@ -27,7 +23,7 @@ class ScalaSynthIntegrationTest
     midi >>> mockedReceiverFunction
     
     // act
-    mc[5].noteOn(50,1000);
+    mc(5).noteOn(50,1000);
     
     // assert
     mockedReceiverFunction expects (new MidiMessage());

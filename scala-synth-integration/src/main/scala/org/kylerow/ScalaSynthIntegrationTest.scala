@@ -17,7 +17,7 @@ class ScalaSynthIntegrationTest
 	var syn = MidiSystem.getSynthesizer();
 	syn.open();
 	val mc = syn.getChannels();
-    val mockedReceiverFunction  = MockFactory.mockFunction[MidiMessage,Unit];
+    val mockedReceiverFunction = MockFactory.mockFunction[MidiMessage,Unit];
     
     var midi = Midi()
     midi >>> mockedReceiverFunction

@@ -38,21 +38,21 @@ class BasicOscillatorModule
 	  case SSNoteOnMidiMessage(note) => playingNote = note
 	}
 	
-	override def nextAudioBuffer(output :Int)() :Array[Word] = null 
-	/*  if(playingNote.on) {
-	    wave(key(playingNote.value));
-	  }*/
+	override def nextAudioBuffer(output :Int)() :Array[Word] = 
+	  if(playingNote.on) {
+	    byteTone(key(playingNote.value));
+	  } else { null }
 	
 	override def moreAudio(output :Int)() :Boolean = playingNote.on
 	
-	/*private def byteTone(tone: Int, speed: Double = 2) = {
-      for (i <- 0 until (SAMPLE_RATE / (speed * 2)).toInt by BYTE_BUFFER_SIZE) { 
-        for (j <- 0 until BYTE_BUFFER_SIZE) { 
-          val angle = (i + j) / (SAMPLE_RATE / tone) * 2.0 * Pi 
-          buf(j) = (osc(angle) * 100).toByte 
-          val left = (sdl.available - sdl.getBufferSize) 
+	private def byteTone(tone: Int, speed: Double = 2) :Array[Word] = {
+	  var buf :Array[Word] = Array.fill(configuration.getBufferSize())(Word(0));
+      for (i <- 0 until (configuration.getSampleRate() / (speed * 2)).toInt by configuration.getBufferSize()) { 
+        for (j <- 0 until configuration.getBufferSize()) { 
+          val angle = (i + j) / (configuration.getSampleRate() / tone) * 2.0 * Pi 
+          buf(i*configuration.getBufferSize()+j) = Word((wave(angle) * 100).toByte)
         } 
-        sdl.write(buf, 0, BYTE_BUFFER_SIZE) 
       } 
-    }*/
+	  buf
+    }
 }

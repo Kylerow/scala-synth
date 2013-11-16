@@ -45,4 +45,23 @@ class BasicOsillatorModuleSpec
 	   // assert
 	   assert(basicOscillatorModule.playingNote==Note(true,65))
 	}
+	
+	"NextAudioBuffer" should "use byteTone and thus wave() to get the next set of samples" in {
+		// arrange
+		val mockWave = mockFunction[Double,Double]
+		val basicOscillatorModule = new BasicOscillatorModule
+		
+		mockWave expects (*)  returning 42 anyNumberOfTimes;
+		basicOscillatorModule.wave=mockWave
+		basicOscillatorModule.playingNote = Note(true,65);
+		basicOscillatorModule.configuration = new SSConfiguration();
+		
+		// act
+		val result = basicOscillatorModule.nextAudioBuffer(1)();
+		
+		// assert
+		assert(	result(1).value.asInstanceOf[Byte]==42 &&
+				result(42).value.asInstanceOf[Byte]==42 && 
+				result(1977).value.asInstanceOf[Byte]==42)
+	}
 }

@@ -6,7 +6,7 @@ import org.kylerow.scalasynth.SSConfiguration
 import org.kylerow.scalasynth.Word
 
 trait Module {
-	@Inject var ssConfiguration :SSConfiguration = _;
+	@Inject var configuration :SSConfiguration = _;
 	def midiMessage(input :Int)(message :SSMidiMessage);
     def nextAudioBuffer(output :Int)() :Array[Word];
 	def moreAudio(output :Int)() :Boolean;

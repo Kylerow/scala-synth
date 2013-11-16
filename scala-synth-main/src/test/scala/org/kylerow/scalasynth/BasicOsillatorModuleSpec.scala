@@ -7,6 +7,7 @@ import org.scalatest.matchers.ShouldMatchers
 import org.scalamock.scalatest.MockFactory
 import org.kylerow.scalasynth.midi.SSNoteOnMidiMessage
 import org.kylerow.scalasynth.util.Note
+import org.kylerow.scalasynth.module.BasicOscillatorModule
 
 
 @RunWith(classOf[JUnitRunner])

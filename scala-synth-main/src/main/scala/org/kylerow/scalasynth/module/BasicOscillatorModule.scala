@@ -1,9 +1,12 @@
-package org.kylerow.scalasynth
+package org.kylerow.scalasynth.module
 
 import math._
 import org.kylerow.scalasynth.midi.SSMidiMessage
 import org.kylerow.scalasynth.util.Note
 import org.kylerow.scalasynth.midi.SSNoteOnMidiMessage
+import org.kylerow.scalasynth.sound.AudioOutputs
+import org.kylerow.scalasynth.midi.MidiInputs
+import org.kylerow.scalasynth.Word
  
 /** 
  *  Basic oscillator module.

@@ -1,5 +1,7 @@
 package org.kylerow.scalasynth
 
-class Module {
+import org.kylerow.midi.SSMidiMessage
 
+trait Module {
+	def midiMessage(input :Int, message :SSMidiMessage);
 }

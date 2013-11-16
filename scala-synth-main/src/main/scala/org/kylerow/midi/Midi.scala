@@ -7,7 +7,7 @@ import javax.sound.midi.Transmitter
 import org.kylerow.util.avoidException
 import javax.sound.midi.MidiUnavailableException
 import scala.collection.JavaConversions._
-import org.kylerow.Injectable
+import org.kylerow.scalasynth.Injectable
 import com.google.inject.Inject
 import org.kylerow.sound.Generator
 

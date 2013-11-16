@@ -1,4 +1,4 @@
-package org.kylerow
+package org.kylerow.scalasynth
 
 import com.google.inject.Injector
 import com.google.inject.Guice

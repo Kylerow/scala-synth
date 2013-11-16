@@ -1,14 +1,8 @@
-package org.kylerow
-
-import javax.sound.midi.Receiver
+package org.kylerow.scalasynth
 import javax.sound.midi.MidiMessage
-import javax.sound.midi.Transmitter
-import javax.sound.midi.MidiSystem
-import javax.sound.midi.MidiDevice
-import javax.sound.midi.MidiUnavailableException
 import org.kylerow.midi.Midi
+import org.kylerow.scalasynth.Injectable
 
-case class Note(noteVal :Int);
 
 /** Linux Notes:
  *  	- Make sure virtual midi is setup: sudo modprobe snd-virmidi

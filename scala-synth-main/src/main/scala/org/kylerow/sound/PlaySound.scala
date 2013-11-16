@@ -18,20 +18,17 @@ object PlaySound {
   val af = new AudioFormat(SAMPLE_RATE, 8, 1, true, false) 
   val sdl = AudioSystem.getSourceDataLine(af)   
   //Oscillators 
-  
-  def square(d: Double): Double = if (sin(d) < 0) -1 else 1 
-  def sine(d: Double): Double = sin(d) 
-  def saw(d: Double): Double = (Pi - (d % (Pi * 2))) / Pi   
+    
   //Returns hertz for nth key 
   
-  def key(n: Int): Int = (440f * pow((pow(2, 1 / 12f)), n - 49 - 12)).toInt   
+    
   def main(args: Array[String]) = { 
     println(af) 
     sdl.open(af) 
     sdl.start()   
-    frereJacques(saw) 
+   /* frereJacques(saw) 
     frereJacques(square) 
-    frereJacques(sine)   
+    frereJacques(sine) */  
     sdl.drain() 
     sdl.stop() 
     sdl.close() 
@@ -47,6 +44,6 @@ object PlaySound {
         sdl.write(buf, 0, BYTE_BUFFER_SIZE) 
       } 
     }
-    val (c, d, e, f, g, a, gdeep) = (key(52), key(54), key(56), key(57), key(59), key(61), key(47));  
+  //  val (c, d, e, f, g, a, gdeep) = (key(52), key(54), key(56), key(57), key(59), key(61), key(47));  
   }   
 }

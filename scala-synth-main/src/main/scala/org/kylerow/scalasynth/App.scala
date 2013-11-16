@@ -1,6 +1,6 @@
 package org.kylerow.scalasynth
 import javax.sound.midi.MidiMessage
-import org.kylerow.midi.Midi
+import org.kylerow.scalasynth.midi.Midi
 import org.kylerow.scalasynth.Injectable
 
 

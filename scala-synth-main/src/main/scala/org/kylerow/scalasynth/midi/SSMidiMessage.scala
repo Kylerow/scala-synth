@@ -1,6 +1,6 @@
-package org.kylerow.midi
+package org.kylerow.scalasynth.midi
 
-import org.kylerow.util.Note
+import org.kylerow.scalasynth.util.Note
  
 class SSMidiMessage;
 case class SSNoteOnMidiMessage(note :Note) extends SSMidiMessage;

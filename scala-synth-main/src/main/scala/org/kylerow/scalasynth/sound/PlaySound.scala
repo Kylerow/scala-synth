@@ -1,4 +1,4 @@
-package org.kylerow.sound
+package org.kylerow.scalasynth.sound
 
 import javax.sound.sampled.AudioSystem 
 import java.io.File 

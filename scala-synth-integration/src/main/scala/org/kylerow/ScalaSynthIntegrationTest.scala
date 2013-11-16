@@ -6,7 +6,7 @@ import org.scalatest.junit.JUnitRunner
 import javax.sound.midi.MidiSystem
 import org.scalamock.scalatest.MockFactory
 import javax.sound.midi.MidiMessage
-import org.kylerow.midi.Midi
+import org.kylerow.scalasynth.midi.Midi
 import javax.sound.midi.ShortMessage
 
 @RunWith(classOf[JUnitRunner])

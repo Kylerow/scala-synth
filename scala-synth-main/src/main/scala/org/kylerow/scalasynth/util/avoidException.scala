@@ -1,4 +1,4 @@
-package org.kylerow.util
+package org.kylerow.scalasynth.util
 
 
 object avoidException {

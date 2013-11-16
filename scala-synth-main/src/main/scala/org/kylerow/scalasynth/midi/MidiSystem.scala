@@ -1,4 +1,4 @@
-package org.kylerow.midi
+package org.kylerow.scalasynth.midi
 
 import javax.sound.midi.MidiDevice
 

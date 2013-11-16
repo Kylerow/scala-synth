@@ -1,15 +1,16 @@
-package org.kylerow.midi
+package org.kylerow.scalasynth.midi
 
 import javax.sound.midi.MidiMessage
 import javax.sound.midi.Receiver
-import com.google.inject.Injector
 import javax.sound.midi.Transmitter
-import org.kylerow.util.avoidException
+import org.kylerow.scalasynth.util.avoidException
 import javax.sound.midi.MidiUnavailableException
 import scala.collection.JavaConversions._
 import org.kylerow.scalasynth.Injectable
 import com.google.inject.Inject
-import org.kylerow.sound.Generator
+import org.kylerow.scalasynth.sound.Generator
+import org.kylerow.scalasynth
+import javax.sound.midi
 
 class Midi {
 	@Inject var midiSystem :MidiSystem = _

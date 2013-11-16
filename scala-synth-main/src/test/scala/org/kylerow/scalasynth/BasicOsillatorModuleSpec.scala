@@ -5,8 +5,8 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 import org.scalamock.scalatest.MockFactory
-import org.kylerow.midi.SSNoteOnMidiMessage
-import org.kylerow.util.Note
+import org.kylerow.scalasynth.midi.SSNoteOnMidiMessage
+import org.kylerow.scalasynth.util.Note
 
 
 @RunWith(classOf[JUnitRunner])
@@ -39,9 +39,9 @@ class BasicOsillatorModuleSpec
 	   var basicOscillatorModule = new BasicOscillatorModule
 	  
 	   // act
-	   basicOscillatorModule.midiMessage(1, SSNoteOnMidiMessage(Note(65)));
+	   basicOscillatorModule.midiMessage(1)(SSNoteOnMidiMessage(Note(true,65)));
 	  
 	   // assert
-	   assert(basicOscillatorModule.playingNote==Note(65))
+	   assert(basicOscillatorModule.playingNote==Note(true,65))
 	}
 }

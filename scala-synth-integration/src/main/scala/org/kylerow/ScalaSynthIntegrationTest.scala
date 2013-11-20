@@ -8,6 +8,8 @@ import org.scalamock.scalatest.MockFactory
 import javax.sound.midi.MidiMessage
 import org.kylerow.scalasynth.midi.Midi
 import javax.sound.midi.ShortMessage
+import org.kylerow.scalasynth.module.BasicOscillatorModule
+import org.kylerow.scalasynth.midi.SSMidiMessage
 
 @RunWith(classOf[JUnitRunner])
 class ScalaSynthIntegrationTest 
@@ -19,7 +21,7 @@ class ScalaSynthIntegrationTest
   {
     // arrange
     val tx = MidiSystem.getTransmitter()
-    val mockedReceiverFunction = mockFunction[MidiMessage,Unit];
+    val mockedReceiverFunction = mockFunction[SSMidiMessage,Unit];
     mockedReceiverFunction expects *;
     
     var midi = Midi()
@@ -28,5 +30,15 @@ class ScalaSynthIntegrationTest
     
     // act
     rx.send(new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 93),-1) 
+  }
+  "main midi input" should "drive basic oscillator" in 
+  {
+    // arrange
+    val midi = Midi();
+    val basicOscillator = new BasicOscillatorModule()
+    midi >> (basicOscillator,1)
+    // act 
+    // assert
+    assert(false)
   }
 }

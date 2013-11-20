@@ -8,8 +8,8 @@ import javax.sound.midi.MidiUnavailableException
 import scala.collection.JavaConversions._
 import org.kylerow.scalasynth.Injectable
 import com.google.inject.Inject
-import org.kylerow.scalasynth.sound.Generator
 import org.kylerow.scalasynth
+import org.kylerow.scalasynth.util.Note
 import javax.sound.midi
 
 class Midi {
@@ -21,14 +21,16 @@ class Midi {
     def connect (tx :List[Transmitter], rx :Receiver) = 
        tx.filter(_!=null).foreach({ _.setReceiver(rx)});
    
-    def connectReceiver( input :MidiMessage => Unit ) = {
+    def connectReceiver( input :SSMidiMessage => Unit ) = {
 		new Receiver{
-	      def send( msg :MidiMessage, timeStamp :Long ) = input(msg)
+	      def send( msg :MidiMessage, timeStamp :Long ) = {
+	        input( SSNoteOnMidiMessage( Note(true,65)))
+	      }
 	      def close() = {}
 	    }
 	}
     
-    def connectAll (rx :MidiMessage => Unit) = {
+    def connectAll (rx :SSMidiMessage => Unit) = {
       connect ( 
         getSystemTransmitters, 
         connectReceiver(rx) 
@@ -48,9 +50,8 @@ class Midi {
    		    .toList.::(avoidAll(()=>midiSystem.getMidiDevice(x).getTransmitter()))
    		}));
     
-    def >>> (rx :MidiMessage => Unit) = connectAll(rx);
-    def >> (generator :Generator) = {}
-    
+    def >>> (rx :SSMidiMessage => Unit) = connectAll(rx);
+    def >> (rx :MidiInputs, inp :Int) = connectAll(rx.midiMessage(1))
 }
 
 object Midi extends Injectable{

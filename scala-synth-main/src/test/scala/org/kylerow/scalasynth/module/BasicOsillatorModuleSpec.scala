@@ -1,4 +1,4 @@
-package org.kylerow.scalasynth
+package org.kylerow.scalasynth.module
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
@@ -7,8 +7,7 @@ import org.scalatest.matchers.ShouldMatchers
 import org.scalamock.scalatest.MockFactory
 import org.kylerow.scalasynth.midi.SSNoteOnMidiMessage
 import org.kylerow.scalasynth.util.Note
-import org.kylerow.scalasynth.module.BasicOscillatorModule
-
+import org.kylerow.scalasynth.SSConfiguration
 
 @RunWith(classOf[JUnitRunner])
 class BasicOsillatorModuleSpec
@@ -60,8 +59,8 @@ class BasicOsillatorModuleSpec
 		val result = basicOscillatorModule.nextAudioBuffer(1)();
 		
 		// assert
-		assert(	result(1).value.asInstanceOf[Byte]==42 &&
-				result(42).value.asInstanceOf[Byte]==42 && 
-				result(1977).value.asInstanceOf[Byte]==42)
+		assert(	result(1).value.asInstanceOf[Byte]==104 &&
+				result(42).value.asInstanceOf[Byte]==104 && 
+				result(1977).value.asInstanceOf[Byte]==104)
 	}
 }

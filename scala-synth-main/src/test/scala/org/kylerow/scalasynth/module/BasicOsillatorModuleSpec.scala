@@ -62,5 +62,6 @@ class BasicOsillatorModuleSpec
 		assert(	result(1).value.asInstanceOf[Byte]==104 &&
 				result(42).value.asInstanceOf[Byte]==104 && 
 				result(1977).value.asInstanceOf[Byte]==104)
+		assert( result.length==44100 )
 	}
 }

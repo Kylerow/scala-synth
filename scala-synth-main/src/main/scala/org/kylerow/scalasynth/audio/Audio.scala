@@ -2,6 +2,7 @@ package org.kylerow.scalasynth.audio
 
 
 import org.kylerow.scalasynth.Injectable
+import org.kylerow.scalasynth.module.Module
 
 /**
  * The primary audio control - provides input and output
@@ -20,10 +21,12 @@ import org.kylerow.scalasynth.Injectable
  * @Author Kyle
  */
 class Audio {
-
-  
+	
 }
 
-object Midi extends Injectable{
+object Audio extends Injectable{
   def apply() :Audio = injector.getInstance(classOf[Audio]);
+  implicit class audioOutputCapture (param :(Module,Int)){
+		def >> (audio :Audio) = {}
+  }
 }

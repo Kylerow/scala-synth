@@ -7,9 +7,12 @@ import javax.sound.midi.MidiSystem
 import org.scalamock.scalatest.MockFactory
 import javax.sound.midi.MidiMessage
 import org.kylerow.scalasynth.midi.Midi
+import org.kylerow.scalasynth.midi.SSMidiMessage
 import javax.sound.midi.ShortMessage
 import org.kylerow.scalasynth.module.BasicOscillatorModule
-import org.kylerow.scalasynth.midi.SSMidiMessage
+import org.kylerow.scalasynth.audio.Audio
+import org.kylerow.scalasynth.audio.Audio._
+import org.kylerow.scalasynth.module.Module
 
 @RunWith(classOf[JUnitRunner])
 class ScalaSynthIntegrationTest 
@@ -31,14 +34,20 @@ class ScalaSynthIntegrationTest
     // act
     rx.send(new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 93),-1) 
   }
+  
   "main midi input" should "drive basic oscillator" in 
   {
     // arrange
     val midi = Midi();
+    val audio = Audio();
     val basicOscillator = new BasicOscillatorModule()
-    midi >> (basicOscillator,1)
+  
     // act 
+    midi >> (basicOscillator,1)
+    (basicOscillator,1) >> audio;
+    
     // assert
     assert(false)
   }
+  
 }

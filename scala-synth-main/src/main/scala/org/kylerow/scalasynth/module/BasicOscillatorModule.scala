@@ -4,14 +4,14 @@ import math._
 import org.kylerow.scalasynth.midi.SSMidiMessage
 import org.kylerow.scalasynth.util.Note
 import org.kylerow.scalasynth.midi.SSNoteOnMidiMessage
-import org.kylerow.scalasynth.sound.AudioOutputs
+import org.kylerow.scalasynth.audio.AudioOutputs
 import org.kylerow.scalasynth.midi.MidiInputs
 import org.kylerow.scalasynth.Word
  
 /** 
  *  Basic oscillator module.
  *  
- *  DSP / Math stuff started from code @
+ *  DSP / Math stuff (byteTone()) started from code @
  *  	http://vigtig.it/blog/blog/2011/04/12/programming-music/
  * 
  *  @Author KyleRow

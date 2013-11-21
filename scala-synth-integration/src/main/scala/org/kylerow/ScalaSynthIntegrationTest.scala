@@ -38,8 +38,8 @@ class ScalaSynthIntegrationTest
   "main midi input" should "drive basic oscillator" in 
   {
     // arrange
-    val midi = Midi();
-    val audio = Audio();
+    val midi = Midi()
+    val audio = Audio()
     val basicOscillator = new BasicOscillatorModule()
   
     // act 

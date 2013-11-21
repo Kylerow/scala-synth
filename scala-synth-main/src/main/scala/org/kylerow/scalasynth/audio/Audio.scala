@@ -21,12 +21,13 @@ import org.kylerow.scalasynth.module.Module
  * @Author Kyle
  */
 class Audio {
-	
+	def registerSender(sender :(Module,Int) ) = {}
 }
 
 object Audio extends Injectable{
+  
   def apply() :Audio = injector.getInstance(classOf[Audio]);
-  implicit class audioOutputCapture (param :(Module,Int)){
-		def >> (audio :Audio) = {}
-  }
+  
+  implicit class audioOutputCapture (param :(Module,Int))
+  {	def >> (audio :Audio) = audio registerSender param }
 }

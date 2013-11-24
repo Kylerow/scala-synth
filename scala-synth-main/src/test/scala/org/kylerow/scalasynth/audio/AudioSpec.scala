@@ -7,6 +7,7 @@ import org.scalamock.scalatest.MockFactory
 import org.scalatest.junit.JUnitRunner
 import org.kylerow.scalasynth.module.Module
 import org.kylerow.scalasynth.module.BasicOscillatorModule
+import org.kylerow.scalasynth.Word
 //import org.mockito.Mock._  
 
 @RunWith(classOf[JUnitRunner])
@@ -23,9 +24,58 @@ extends FlatSpec
 	// arrange 
     val myTuple = (new BasicOscillatorModule, 1)
     val mockAudio = mock[Audio]
-    (mockAudio.registerSender _).expects( myTuple )
+    (mockAudio.attachSender _).expects( myTuple )
     
     // act
     myTuple >> mockAudio
+  }
+  
+  "RunAudio" should "loop and send to dataline" in {
+    import scala.concurrent._
+	import ExecutionContext.Implicits.global
+	  
+    // arrange
+    val audio = new Audio();
+    val stubModule = stub[Module]
+    val wordArray = Array(Word(42));
+    val stubAudioPort = stub[AudioPort]
+    val stubAudioSystem = stub[AudioSystem]
+    
+    (stubModule.nextAudioBuffer(_ :Int) ).when(1).returns(wordArray)
+    (stubAudioSystem.getPort _) when() returns (stubAudioPort)
+    audio.audioSystem = stubAudioSystem;
+    
+    // act
+    audio.senderOfRecord=(stubModule,1)
+    future { audio runAudio (stubModule,1) }
+    Thread.sleep(1000);
+    
+    // assert
+    (stubModule.nextAudioBuffer _) verify(1) atLeastOnce()
+    (stubAudioPort.sendData _) verify(wordArray) atLeastOnce()
+  }
+  "RunAudio" should "not loop and not send to dataline" in {
+    import scala.concurrent._
+	import ExecutionContext.Implicits.global
+	  
+    // arrange
+    val audio = new Audio();
+    val stubModule = stub[Module]
+    val wordArray = Array(Word(42));
+    val stubAudioPort = stub[AudioPort]
+    val stubAudioSystem = stub[AudioSystem]
+    
+    (stubModule.nextAudioBuffer(_ :Int) ).when(1).returns(wordArray)
+    (stubAudioSystem.getPort _) when() returns (stubAudioPort)
+    audio.audioSystem = stubAudioSystem;
+    
+    // act
+    audio.senderOfRecord=null;
+    future { audio runAudio (stubModule,1) }
+    Thread.sleep(1000);
+    
+    // assert
+    (stubModule.nextAudioBuffer _) verify(1) never()
+    (stubAudioPort.sendData _) verify(wordArray) never()
   }
 }

@@ -1,33 +1,42 @@
 package org.kylerow.scalasynth.audio
 
-
 import org.kylerow.scalasynth.Injectable
 import org.kylerow.scalasynth.module.Module
+import javax.sound.sampled.AudioFormat
+import com.google.inject.Inject
+import org.kylerow.scalasynth.Word
 
 /**
  * The primary audio control - provides input and output
  * 
- * **Note: Syntax I want from the output
- * 			(module, input #) >> audioInstance
- *         This means - I'll probably have to make a 
- *         implicit Tuple2 that offers the >> method
- *         
- *         I also want, as a part of this syntax, that the
- *         audioInstance actually does the work of taking the output
- *         so the >> method should delagate to the audio instance
- *         that is passed in
- * 
- * 
  * @Author Kyle
  */
 class Audio {
-	def registerSender(sender :(Module,Int) ) = {}
+	@Inject var audioSystem :AudioSystem = _
+  	
+	def attachSender(sender :(Module,Int) ) = {
+  	  import scala.concurrent._
+	  import ExecutionContext.Implicits.global
+	  
+  	  this.senderOfRecord = sender;
+	  future ( runAudio(sender) )
+  	}
+  	
+	var senderOfRecord :(Module,Int) = _;
+	
+  	def runAudio(audioSender :(Module,Int)){
+  	  val audioPort = audioSystem.getPort();
+  	  val dataSource =
+  	    audioSender._1.nextAudioBuffer(audioSender._2) _;
+  	  while(audioSender == this.senderOfRecord) 
+  	    audioPort.sendData(dataSource());
+  	}
 }
 
 object Audio extends Injectable{
   
-  def apply() :Audio = injector.getInstance(classOf[Audio]);
+  def apply() :Audio = injector.getInstance(classOf[Audio])  
   
   implicit class audioOutputCapture (param :(Module,Int))
-  {	def >> (audio :Audio) = audio registerSender param }
+  {	def >> (audio :Audio) = audio attachSender param }
 }

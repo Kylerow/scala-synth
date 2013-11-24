@@ -11,10 +11,22 @@ import org.kylerow.scalasynth.Word
  * 
  * @Author Kyle
  */
-class Audio {
+trait Audio{
+  def attachSender(sender :(Module,Int) );
+}
+
+object Audio extends Injectable{
+  
+  def apply() :Audio = injector.getInstance(classOf[AudioImplementation])  
+  
+  implicit class audioOutputCapture (param :(Module,Int))
+  {	def >> (audio :Audio) = audio attachSender param }
+}
+
+class AudioImplementation extends Audio {
 	@Inject var audioSystem :AudioSystem = _
   	
-	def attachSender(sender :(Module,Int) ) = {
+	override def attachSender(sender :(Module,Int) ) = {
   	  import scala.concurrent._
 	  import ExecutionContext.Implicits.global
 	  
@@ -33,10 +45,3 @@ class Audio {
   	}
 }
 
-object Audio extends Injectable{
-  
-  def apply() :Audio = injector.getInstance(classOf[Audio])  
-  
-  implicit class audioOutputCapture (param :(Module,Int))
-  {	def >> (audio :Audio) = audio attachSender param }
-}

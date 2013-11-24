@@ -35,7 +35,7 @@ extends FlatSpec
 	import ExecutionContext.Implicits.global
 	  
     // arrange
-    val audio = new Audio();
+    val audio = new AudioImplementation();
     val stubModule = stub[Module]
     val wordArray = Array(Word(42));
     val stubAudioPort = stub[AudioPort]
@@ -59,7 +59,7 @@ extends FlatSpec
 	import ExecutionContext.Implicits.global
 	  
     // arrange
-    val audio = new Audio();
+    val audio = new AudioImplementation();
     val stubModule = stub[Module]
     val wordArray = Array(Word(42));
     val stubAudioPort = stub[AudioPort]

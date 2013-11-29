@@ -8,7 +8,6 @@ import org.scalatest.junit.JUnitRunner
 import org.kylerow.scalasynth.module.Module
 import org.kylerow.scalasynth.module.BasicOscillatorModule
 import org.kylerow.scalasynth.Word
-//import org.mockito.Mock._  
 
 @RunWith(classOf[JUnitRunner])
 class AudioSpec 

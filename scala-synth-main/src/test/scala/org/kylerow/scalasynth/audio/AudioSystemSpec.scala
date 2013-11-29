@@ -6,6 +6,7 @@ import org.scalatest.FlatSpec
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.junit.Assert._
+import org.kylerow.scalasynth.SSConfiguration
 
 @RunWith(classOf[JUnitRunner])
 class AudioSystemSpec 
@@ -18,6 +19,7 @@ extends FlatSpec
 	  
 	  // arrange
 	  var audioSystem = new AudioSystem
+	  audioSystem.config = new SSConfiguration
 	  
 	  // act
 	  var result = audioSystem getPort

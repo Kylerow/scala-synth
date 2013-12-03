@@ -41,10 +41,15 @@ class ScalaSynthIntegrationTest
     val midi = Midi()
     val audio = Audio()
     val basicOscillator = new BasicOscillatorModule()
-  
+    basicOscillator.setWave(basicOscillator.sine)
+    
     // act 
     midi >> (basicOscillator,1)
     (basicOscillator,1) >> audio;
+    
+    // todo: 
+    // - kick off a particular note
+    // - verify the frequency based on several points matching the expected wave length
     
     // assert
     assert(false)

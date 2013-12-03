@@ -18,6 +18,8 @@ extends FlatSpec
 	  // arrange
 	  val wordArray = Array(Word(8,42))
 	  val audioPort = new AudioPort
+	  audioPort.writeLength=10000;
+	  
 	  val dataLine = mock[SourceDataLine]
 	  audioPort.sourceDataLine = dataLine
 	  
@@ -31,9 +33,12 @@ extends FlatSpec
 	  
 	}
 	"sendData" should "put bytes in order, in larger word sizes" in {
+	  
 	  // arrange
 	  val wordArray = Array(Word(16,127),Word(16,1025),Word(16,128))
 	  val audioPort = new AudioPort
+	  audioPort.writeLength=10000;
+	  
 	  val dataLine = mock[SourceDataLine]
 	  audioPort.sourceDataLine = dataLine
 	  
@@ -42,6 +47,7 @@ extends FlatSpec
 	        (x :Array[Byte], y :Int, z :Int) => 
 	          x.deep == Array[Byte](127,0,1,4,-128,0).deep && y==0 && z==10000 
 	      })
+	      
 	  // act
 	  val result = audioPort sendData wordArray
 	  

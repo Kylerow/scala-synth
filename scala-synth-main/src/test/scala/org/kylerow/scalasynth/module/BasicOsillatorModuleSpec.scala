@@ -59,9 +59,9 @@ class BasicOsillatorModuleSpec
 		val result = basicOscillatorModule.nextAudioBuffer(1)();
 		
 		// assert
-		assert(	result(1).value.asInstanceOf[Byte]==104 &&
-				result(42).value.asInstanceOf[Byte]==104 && 
-				result(1977).value.asInstanceOf[Byte]==104)
-		assert( result.length==96000 )
+		assert(	result(1).value==4200 &&
+				result(42).value==4200 && 
+				result(1977).value==4200)
+		assert( result.length==4096 )
 	}
 }

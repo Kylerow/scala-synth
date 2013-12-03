@@ -22,6 +22,7 @@ class AudioSystem {
  
  	  val audioPort = new AudioPort();
  	  audioPort.sourceDataLine = dataLine
+ 	  audioPort.writeLength = config.getWriteLength()
   	  audioPort;
   	}
   	

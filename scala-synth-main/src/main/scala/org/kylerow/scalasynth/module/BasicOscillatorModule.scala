@@ -40,18 +40,20 @@ class BasicOscillatorModule
 	
 	override def nextAudioBuffer(output :Int)() :Array[Word] = 
 	  if(playingNote.on) {
-	    byteTone(key(playingNote.value));
+	    tone(key(playingNote.value));
 	  } else { null }
 	
 	override def moreAudio(output :Int)() :Boolean = playingNote.on
 	
-	private def byteTone(tone: Int, speed: Double = 2) :Array[Word] = {
-	  var buf :Array[Word] = Array.fill(configuration.getSampleRate())(Word(8,0));
-      for (i <- 0 until (configuration.getSampleRate() / (speed * 2)).toInt by configuration.getBufferSize()) { 
-        for (j <- 0 until configuration.getBufferSize()) { 
-          val angle = (i + j) / (configuration.getSampleRate() / tone) * 2.0 * Pi 
-          buf(i+j) = Word(8,(wave(angle) * 100).toByte)
-        } 
+	private def tone(tone: Int) :Array[Word] = {
+	  var buf :Array[Word] = Array.fill(configuration.getWriteLength)(Word(0,0));
+      for (j <- 0 until configuration.getWriteLength()) { 
+    	  // We'll want to scale this out for larger sample size to 
+    	  // to take advantage of the additional headroom
+          val angle = (j) / (configuration.getSampleRate() / tone) * 2.0 * Pi 
+          val value = (wave(angle) * 100).toInt 
+          
+          buf(j) = Word(configuration.getSampleSize,value)
       } 
 	  buf
     }

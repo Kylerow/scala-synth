@@ -15,11 +15,13 @@ class AudioSystem {
  	    	AudioSystem
  	    	.getSourceDataLine(
  	    	    new AudioFormat(
- 	    	        config.getSampleRate, config.getSampleSize, 1, 
+ 	    	        config.getSampleRate, 
+ 	    	        config.getSampleSize,  	    	        
+ 	    	        1, 
  	    	        true, false))   
  
  	  val audioPort = new AudioPort();
- 	  audioPort.setDataLine(dataLine);
+ 	  audioPort.sourceDataLine = dataLine
   	  audioPort;
   	}
   	

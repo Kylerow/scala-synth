@@ -36,7 +36,7 @@ extends FlatSpec
     // arrange
     val audio = new AudioImplementation();
     val stubModule = stub[Module]
-    val wordArray = Array(Word(42));
+    val wordArray = Array(Word(8,42));
     val stubAudioPort = stub[AudioPort]
     val stubAudioSystem = stub[AudioSystem]
     
@@ -60,7 +60,7 @@ extends FlatSpec
     // arrange
     val audio = new AudioImplementation();
     val stubModule = stub[Module]
-    val wordArray = Array(Word(42));
+    val wordArray = Array(Word(8,42));
     val stubAudioPort = stub[AudioPort]
     val stubAudioSystem = stub[AudioSystem]
     

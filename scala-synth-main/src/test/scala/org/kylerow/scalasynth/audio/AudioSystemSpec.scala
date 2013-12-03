@@ -26,7 +26,7 @@ extends FlatSpec
 	  
 	  // assert
 	  assertNotNull(result)
-	  assertEquals(result.getDataLine().getFormat().getSampleRate(),96000f,0)
-	  assertEquals(result.getDataLine().getFormat().getSampleSizeInBits(),16,0)
+	  assertEquals(result.sourceDataLine.getFormat().getSampleRate(),96000f,0)
+	  assertEquals(result.sourceDataLine.getFormat().getSampleSizeInBits(),16,0)
 	}
 }

@@ -13,6 +13,12 @@ import org.kylerow.scalasynth.module.BasicOscillatorModule
 import org.kylerow.scalasynth.audio.Audio
 import org.kylerow.scalasynth.audio.Audio._
 import org.kylerow.scalasynth.module.Module
+import javax.sound.sampled.SourceDataLine
+import org.kylerow.scalasynth.audio.AudioPort
+import org.kylerow.scalasynth.audio.AudioSystem
+import org.kylerow.scalasynth.Injectable
+import com.google.inject.Guice
+import com.google.inject.AbstractModule
 
 @RunWith(classOf[JUnitRunner])
 class ScalaSynthIntegrationTest 
@@ -38,6 +44,16 @@ class ScalaSynthIntegrationTest
   "main midi input" should "drive basic oscillator" in 
   {
     // arrange
+    val mockSourceDataLine = stub[SourceDataLine]
+    val audioPort = new AudioPort
+    audioPort.sourceDataLine = mockSourceDataLine
+    val mockAudioSystem = mock[AudioSystem]
+    (mockAudioSystem.getPort _).expects().returning(audioPort);
+    Injectable.injector = Guice.createInjector(
+    new AbstractModule{
+    	def configure() = bind(classOf[AudioSystem]).toInstance(mockAudioSystem);
+    });
+    
     val midi = Midi()
     val audio = Audio()
     val basicOscillator = new BasicOscillatorModule()
@@ -47,12 +63,29 @@ class ScalaSynthIntegrationTest
     midi >> (basicOscillator,1)
     (basicOscillator,1) >> audio;
     
-    // todo: 
-    // - kick off a particular note
-    // - verify the frequency based on several points matching the expected wave length
-    
     // assert
-    assert(false)
+    val period = 1/440
+    val s = period * 96000
+    var endMinusOneHundredSamples :Byte=0;
+    inSequence{
+	    (mockSourceDataLine.write _).verify(where{
+	      (data :Array[Byte],buf,len) =>
+	        endMinusOneHundredSamples = data(data.length-100)
+	        ((data(1000)==data(1000+Math.ceil(s).asInstanceOf[Int]) ||
+	        data(1000)==data(1000+Math.floor(s).asInstanceOf[Int])) &&
+	        (data(2016)==data(2016+Math.ceil(s).asInstanceOf[Int])  ||
+	        data(2016)==data(2016+Math.floor(s).asInstanceOf[Int])))
+	    })
+	    (mockSourceDataLine.write _).verify(where{
+	      (data :Array[Byte],buf,len) =>	        
+	        ((data(100+Math.ceil(s).asInstanceOf[Int])==endMinusOneHundredSamples   ||
+	         data(100+Math.floor(s).asInstanceOf[Int])==endMinusOneHundredSamples) &&
+	        (data(1000)==data(1000+Math.ceil(s).asInstanceOf[Int]) ||
+	        data(1000)==data(1000+Math.floor(s).asInstanceOf[Int])) &&
+	        (data(2016)==data(2016+Math.ceil(s).asInstanceOf[Int])  ||
+	        data(2016)==data(2016+Math.floor(s).asInstanceOf[Int])))
+	    })
+    }
   }
   
 }

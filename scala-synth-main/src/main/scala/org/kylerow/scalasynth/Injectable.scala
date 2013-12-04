@@ -4,5 +4,8 @@ import com.google.inject.Injector
 import com.google.inject.Guice
 
 trait Injectable {
-	implicit var injector :Injector = Guice.createInjector();
+	implicit var injector = Injectable.injector;
+}
+object Injectable{
+  var injector:Injector = Guice.createInjector();
 }

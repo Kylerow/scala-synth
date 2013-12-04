@@ -24,7 +24,7 @@ class Midi {
     def connectReceiver( input :SSMidiMessage => Unit ) = {
 		new Receiver{
 	      def send( msg :MidiMessage, timeStamp :Long ) = {
-	        input( SSNoteOnMidiMessage( Note(true,65)))
+	        input( SSNoteOnMidiMessage( Note(true,69)))
 	      }
 	      def close() = {}
 	    }

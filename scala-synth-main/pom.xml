@@ -25,7 +25,7 @@
     <repository>
       <id>scala-tools.org</id>
       <name>Scala-Tools Maven2 Repository</name>
-      <url>http://maven.org</url>
+      <url>http://repo.maven.apache.org</url>
     </repository>
   </repositories>
 
@@ -33,7 +33,7 @@
     <pluginRepository>
       <id>scala-tools.org</id>
       <name>Scala-Tools Maven2 Repository</name>
-      <url>http://maven.org</url>
+      <url>http://repo.maven.apache.org</url>
     </pluginRepository>
   </pluginRepositories>
   <dependencies>

@@ -35,7 +35,7 @@ class ScalaSynthIntegrationTest
     mockedReceiverFunction expects *;
     
     var midi = Midi()
-    midi >>> mockedReceiverFunction
+ //  midi >>> mockedReceiverFunction
     val rx = tx.getReceiver
     
     // act
@@ -49,7 +49,7 @@ class ScalaSynthIntegrationTest
     mockedReceiverFunction expects *;
     
     var midi = Midi()
-    midi >>> mockedReceiverFunction
+ //   midi >>> mockedReceiverFunction
     
     // act
     a4 >> midi
@@ -58,10 +58,10 @@ class ScalaSynthIntegrationTest
   {
     // arrange
     val mockSourceDataLine = stub[SourceDataLine]
-    val audioPort = new AudioPort
-    audioPort.sourceDataLine = mockSourceDataLine
+ //   val audioPort = new AudioPort
+ //   audioPort.sourceDataLine = mockSourceDataLine
     val mockAudioSystem = mock[AudioSystem]
-    (mockAudioSystem.getPort _).expects().returning(audioPort);
+  //  (mockAudioSystem.getPort _).expects().returning(audioPort);
     Injectable.injector = Guice.createInjector(
     new AbstractModule{
     	def configure() = bind(classOf[AudioSystem]).toInstance(mockAudioSystem);
@@ -73,7 +73,7 @@ class ScalaSynthIntegrationTest
     basicOscillator.setWave(basicOscillator.sine)
     
     // act 
-    midi >> (basicOscillator,1)
+  //  midi >> (basicOscillator,1)
     (basicOscillator,1) >> audio;
     a4 >> midi;
     

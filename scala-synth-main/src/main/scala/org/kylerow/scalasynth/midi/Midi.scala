@@ -9,28 +9,17 @@ import org.kylerow.scalasynth
 import javax.sound.midi
 import org.kylerow.scalasynth.note._
 
-class Midi{
-	@Inject var eventProviderLocator :EventProviderLocator = _
+class Midi extends EventProvider{
+	@Inject var eventProviderLocator :EventProviderLocator = _ 
+    @Inject var eventConnector :EventConnector = _
 	
-    def connect (tx :List[Transmitter], rx :Receiver) = 
-       tx.filter(_!=null);
-   
-    def connectReceiver( input :SSMidiMessage => Unit ) = {
-		new Receiver{
-	      def send( msg :MidiMessage, timeStamp :Long ) = {
-	        input( SSNoteOnMidiMessage( d5 ))
-	      }
-	      def close() = {}
-	    }
-	}
-    
-    
-    def registerReceiver() = {
-      val eventProviders = eventProviderLocator.getAllSystemMidiTransmitters();
+    def registerReceiver(eventReceiver :EventReceiver) = {
+      val systemProviders = eventProviderLocator.getAllSystemMidiTransmitters();
+      val eventProviders = systemProviders ::: List(this);
+      eventConnector.connect(eventProviders,eventReceiver);
     }
     
-    def >>> (rx :SSMidiMessage => Unit) = {}//connectAll(rx);
-    def >> (rx :MidiInputs, inp :Int) = {}//connectAll(rx.midiMessage(1))
+    def >> (receiver :EventReceiver) = registerReceiver(receiver)
     
     def playNote (note :Note) =  {}
 }

@@ -1,5 +1,9 @@
 package org.kylerow.scalasynth.midi
 
+import javax.sound.midi.Receiver
+import javax.sound.midi.MidiMessage
+import org.kylerow.scalasynth.note.a4
+
 class TransmitterEventProvider extends EventProvider {
   var transmitter :Transmitter = _;
   def getTransmitter() = {this.transmitter}
@@ -8,17 +12,7 @@ class TransmitterEventProvider extends EventProvider {
     this;
   }
   def begin() = {
-    
-  /*
-   *  def connectReceiver( input :SSMidiMessage => Unit ) = {
-		new Receiver{
-	      def send( msg :MidiMessage, timeStamp :Long ) = {
-	        input( SSNoteOnMidiMessage( d5 ))
-	      }
-	      def close() = {}
-	    }
-	}
-   */
+    transmitter setCallback { sendEvent(_) }
     this
   }
 }

@@ -19,7 +19,8 @@ class Midi extends EventProvider{
       eventConnector.connect(eventProviders,eventReceiver);
     }
     
-    def >> (receiver :EventReceiver) = registerReceiver(receiver)
+    def >> (receiver :EventReceiver) = 
+      registerReceiver(receiver)
     
     def playNote (note :Note) = 
       this.sendEvent(note)

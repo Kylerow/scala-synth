@@ -27,41 +27,16 @@ class ScalaSynthIntegrationTest
 	with ShouldMatchers
 	with MockFactory{
   
-  "scala-synth" should "send midi messages to the receiver" in
-  {
-    // arrange
-    val tx = MidiSystem.getTransmitter()
-    val mockedReceiverFunction = mockFunction[SSMidiMessage,Unit];
-    mockedReceiverFunction expects *;
-    
-    var midi = Midi()
- //  midi >>> mockedReceiverFunction
-    val rx = tx.getReceiver
-    
-    // act
-    rx.send(new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 93),-1) 
-  }
-  "scala-synth" should "send midi messages to the receiver on direct note input" in
-  {
-    // arrange
-    val tx = MidiSystem.getTransmitter()
-    val mockedReceiverFunction = mockFunction[SSMidiMessage,Unit];
-    mockedReceiverFunction expects *;
-    
-    var midi = Midi()
- //   midi >>> mockedReceiverFunction
-    
-    // act
-    a4 >> midi
-  }
   "main midi input" should "drive basic oscillator" in 
   {
     // arrange
     val mockSourceDataLine = stub[SourceDataLine]
- //   val audioPort = new AudioPort
- //   audioPort.sourceDataLine = mockSourceDataLine
+    val audioPort = new AudioPort
+    audioPort.sourceDataLine = mockSourceDataLine
+    
     val mockAudioSystem = mock[AudioSystem]
-  //  (mockAudioSystem.getPort _).expects().returning(audioPort);
+    (mockAudioSystem.getPort _).expects().returning(audioPort);
+    
     Injectable.injector = Guice.createInjector(
     new AbstractModule{
     	def configure() = bind(classOf[AudioSystem]).toInstance(mockAudioSystem);
@@ -73,7 +48,7 @@ class ScalaSynthIntegrationTest
     basicOscillator.setWave(basicOscillator.sine)
     
     // act 
-  //  midi >> (basicOscillator,1)
+    midi >> basicOscillator
     (basicOscillator,1) >> audio;
     a4 >> midi;
     

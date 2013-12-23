@@ -39,7 +39,7 @@ class BasicOsillatorModuleSpec
 	   var basicOscillatorModule = new BasicOscillatorModule
 	  
 	   // act
-	   basicOscillatorModule.midiMessage(1)(SSNoteOnMidiMessage(a4.off));
+	   basicOscillatorModule.eventMessage(1)(a4);
 	  
 	   // assert
 	   assert(basicOscillatorModule.playingNote==a4)

@@ -4,9 +4,10 @@ import math._
 import org.kylerow.scalasynth.midi.SSMidiMessage
 import org.kylerow.scalasynth.midi.SSNoteOnMidiMessage
 import org.kylerow.scalasynth.audio.AudioOutputs
-import org.kylerow.scalasynth.midi.MidiInputs
 import org.kylerow.scalasynth.Word
 import org.kylerow.scalasynth.note._
+import org.kylerow.scalasynth.midi.EventInputs
+import org.kylerow.scalasynth.midi.Event
  
 /** 
  *  Basic oscillator module.
@@ -18,10 +19,10 @@ import org.kylerow.scalasynth.note._
  */
 class BasicOscillatorModule
 	extends Module 
-	   with MidiInputs 
+	   with EventInputs 
 	   with AudioOutputs{
   
-	val numberOfMidiInputs = 1
+	val numberOfEventInputs = 1
 	val numberOfAudioOutpus = 2
 	
 	def square(d: Double): Double = if (sin(d) < 0) -1 else 1 
@@ -34,8 +35,9 @@ class BasicOscillatorModule
 	
 	def setWave(wave: (Double)=>Double) = this.wave = wave;
 	
-	override def midiMessage(input :Int)(message :SSMidiMessage) = message match {
-	  case SSNoteOnMidiMessage(note) => playingNote = note
+	override def eventMessage(input :Int)(message :Event) =
+    message match {
+	  	case x :Note => playingNote = x
 	}
 	
 	override def nextAudioBuffer(output :Int)() :Array[Word] = 

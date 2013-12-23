@@ -19,6 +19,7 @@ import org.kylerow.scalasynth.audio.AudioSystem
 import org.kylerow.scalasynth.Injectable
 import com.google.inject.Guice
 import com.google.inject.AbstractModule
+import org.kylerow.scalasynth.note._
 
 @RunWith(classOf[JUnitRunner])
 class ScalaSynthIntegrationTest 
@@ -40,7 +41,19 @@ class ScalaSynthIntegrationTest
     // act
     rx.send(new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 93),-1) 
   }
-  
+  "scala-synth" should "send midi messages to the receiver on direct note input" in
+  {
+    // arrange
+    val tx = MidiSystem.getTransmitter()
+    val mockedReceiverFunction = mockFunction[SSMidiMessage,Unit];
+    mockedReceiverFunction expects *;
+    
+    var midi = Midi()
+    midi >>> mockedReceiverFunction
+    
+    // act
+    a4 >> midi
+  }
   "main midi input" should "drive basic oscillator" in 
   {
     // arrange
@@ -62,6 +75,7 @@ class ScalaSynthIntegrationTest
     // act 
     midi >> (basicOscillator,1)
     (basicOscillator,1) >> audio;
+    a4 >> midi;
     
     // assert
     val period = 1/440

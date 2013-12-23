@@ -2,11 +2,11 @@ package org.kylerow.scalasynth.module
 
 import math._
 import org.kylerow.scalasynth.midi.SSMidiMessage
-import org.kylerow.scalasynth.util.Note
 import org.kylerow.scalasynth.midi.SSNoteOnMidiMessage
 import org.kylerow.scalasynth.audio.AudioOutputs
 import org.kylerow.scalasynth.midi.MidiInputs
 import org.kylerow.scalasynth.Word
+import org.kylerow.scalasynth.note._
  
 /** 
  *  Basic oscillator module.
@@ -30,7 +30,7 @@ class BasicOscillatorModule
 	def key(n: Int): Int = (440f * pow((pow(2, 1 / 12f)), n - 49 - 12)).toInt 
 	
 	var wave: (Double)=>Double = _
-	var playingNote: Note = Note(false, 0);
+	var playingNote: Note = a4.off
 	
 	def setWave(wave: (Double)=>Double) = this.wave = wave;
 	
@@ -39,11 +39,11 @@ class BasicOscillatorModule
 	}
 	
 	override def nextAudioBuffer(output :Int)() :Array[Word] = 
-	  if(playingNote.on) {
-	    tone(key(playingNote.value));
+	  if(playingNote.playing) {
+	    tone(playingNote.value);
 	  } else { null }
 	
-	override def moreAudio(output :Int)() :Boolean = playingNote.on
+	override def moreAudio(output :Int)() :Boolean = playingNote.playing
 	
 	private def tone(tone: Int) :Array[Word] = {
 	  var buf :Array[Word] = Array.fill(configuration.getWriteLength)(Word(0,0));

@@ -6,8 +6,8 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 import org.scalamock.scalatest.MockFactory
 import org.kylerow.scalasynth.midi.SSNoteOnMidiMessage
-import org.kylerow.scalasynth.util.Note
 import org.kylerow.scalasynth.SSConfiguration
+import org.kylerow.scalasynth.note._
 
 @RunWith(classOf[JUnitRunner])
 class BasicOsillatorModuleSpec
@@ -39,10 +39,10 @@ class BasicOsillatorModuleSpec
 	   var basicOscillatorModule = new BasicOscillatorModule
 	  
 	   // act
-	   basicOscillatorModule.midiMessage(1)(SSNoteOnMidiMessage(Note(true,65)));
+	   basicOscillatorModule.midiMessage(1)(SSNoteOnMidiMessage(a4.off));
 	  
 	   // assert
-	   assert(basicOscillatorModule.playingNote==Note(true,65))
+	   assert(basicOscillatorModule.playingNote==a4)
 	}
 	
 	"NextAudioBuffer" should "use byteTone and thus wave() to get the next set of samples" in {
@@ -52,7 +52,7 @@ class BasicOsillatorModuleSpec
 		
 		mockWave expects (*)  returning 42 anyNumberOfTimes;
 		basicOscillatorModule.wave=mockWave
-		basicOscillatorModule.playingNote = Note(true,65);
+		basicOscillatorModule.playingNote = a4.on;
 		basicOscillatorModule.configuration = new SSConfiguration();
 		
 		// act

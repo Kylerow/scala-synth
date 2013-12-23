@@ -1,17 +1,11 @@
 package org.kylerow.scalasynth.midi
 
-trait EventProvider {
-  def addReceiver(eventReceiver :EventReceiver) = {
-    
-  }
-  /*
-   *  def connectReceiver( input :SSMidiMessage => Unit ) = {
-		new Receiver{
-	      def send( msg :MidiMessage, timeStamp :Long ) = {
-	        input( SSNoteOnMidiMessage( d5 ))
-	      }
-	      def close() = {}
-	    }
-	}
-   */
+class EventProvider {
+  var receivers = List[EventReceiver]();
+  
+  def addReceiver(eventReceiver :EventReceiver) = 
+    receivers :::= List(eventReceiver)
+  
+  def sendEvent(event :Event) = 
+    receivers.foreach(_.receive(event))
 }

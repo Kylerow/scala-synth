@@ -21,7 +21,8 @@ class Midi extends EventProvider{
     
     def >> (receiver :EventReceiver) = registerReceiver(receiver)
     
-    def playNote (note :Note) =  {}
+    def playNote (note :Note) = 
+      this.sendEvent(note)
 }
 
 object Midi extends Injectable{

@@ -5,6 +5,7 @@ import org.junit.runner.RunWith
 import org.scalatest.FlatSpec
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
+import org.kylerow.scalasynth.note.a4
 
 
 @RunWith(classOf[JUnitRunner])
@@ -33,5 +34,20 @@ class MidiSpec
     
     // act
     midi >> mockEventReceiver
+  }
+  
+  "playNote" should 
+  "put the note event to each of the receivers" in {
+    // arrange
+    val mockReceiver = mock[EventReceiver]
+    val midi = new Midi
+    val note = a4
+    midi.receivers = List(mockReceiver)
+    
+    (mockReceiver.receive _) expects(note) 
+    
+    // act
+    midi.playNote(a4);
+    
   }
 }

@@ -1,8 +1,9 @@
 package org.kylerow.scalasynth.note
 
 import org.kylerow.scalasynth.midi.Midi
+import org.kylerow.scalasynth.midi.Event
 
-trait Note {
+trait Note extends Event{
 	var playing :Boolean = false;
 	def >> (midi :Midi)= {
 	  midi.playNote(this)

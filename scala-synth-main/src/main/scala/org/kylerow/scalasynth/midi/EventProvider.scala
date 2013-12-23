@@ -1,6 +1,9 @@
 package org.kylerow.scalasynth.midi
 
 trait EventProvider {
+  def addReceiver(eventReceiver :EventReceiver) = {
+    
+  }
   /*
    *  def connectReceiver( input :SSMidiMessage => Unit ) = {
 		new Receiver{

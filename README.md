@@ -18,13 +18,15 @@ There are two separate components:
 
 
 Both can be built via Maven - 
-- In <b>scala-synth-main</b>:  mvn clean package install (this will put the package in the local repository so the integration package can test it
-- In <b>scala-synth-integration</b> - mvn clean package
+- In <b>scala-synth-main</b>: <br>
+  <pre>mvn clean package install</pre> 
+  (this will put the package in the local repository so the integration package can test it
+- In <b>scala-synth-integration</b> - 
+  <pre>mvn clean package</pre>
 
 To use the system - go into <b>scala-synth-main</b> - use the following command:
 
-mvn scala:console
-
+<pre>mvn scala:console</pre>
 
 Status
 =========

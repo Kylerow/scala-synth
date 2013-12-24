@@ -9,7 +9,7 @@ In addition to a standalone mode integrating with standard midi and audio system
 
 ***A note for testing in Linux:  virtual midi is setup with the following: sudo modprobe snd-virmidi
 
-Building
+Building & Using
 ==========
 There are two separate components:
 
@@ -20,6 +20,10 @@ There are two separate components:
 Both can be built via Maven - 
 - In <b>scala-synth-main</b>:  mvn clean package install (this will put the package in the local repository so the integration package can test it
 - In <b>scala-synth-integration</b> - mvn clean package
+
+To use the system - go into <b>scala-synth-main</b> - use the following command:
+
+mvn scala:console
 
 
 Status

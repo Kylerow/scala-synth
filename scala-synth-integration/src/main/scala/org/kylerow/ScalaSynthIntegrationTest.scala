@@ -27,22 +27,39 @@ class ScalaSynthIntegrationTest
   "main midi input" should "drive basic oscillator" in 
   {
     // arrange
-    val mockSourceDataLine = stub[SourceDataLine]
+    val mockSourceDataLine = mock[SourceDataLine]
     val audioPort = new AudioPort
     audioPort.sourceDataLine = mockSourceDataLine
     
     val mockAudioSystem = mock[AudioSystem]
     (mockAudioSystem.getPort _).expects().returning(audioPort);
-    
-    Injectable.injector = Guice.createInjector(
+     
+    val period :Double = 1.asInstanceOf[Double]/440.asInstanceOf[Double]
+    val samplesPerPeriod :Double = period * 96000
+    (mockSourceDataLine.write _) expects (where{
+      (data :Array[Byte],buf,len) =>
+        println(
+            "[samplesPerPeriod="+samplesPerPeriod+
+            ", period="+period+
+            ", data(1000)="+data(1000)+
+            ",data(1000+s)={"+
+            data(1000+Math.ceil(samplesPerPeriod).asInstanceOf[Int])+","+
+            data(1000+Math.floor(samplesPerPeriod).asInstanceOf[Int])+
+            "}]")
+        ((data(1000)==data(1000+Math.ceil(samplesPerPeriod).asInstanceOf[Int]) ||
+        data(1000)==data(1000+Math.floor(samplesPerPeriod).asInstanceOf[Int])) &&
+        (data(2016)==data(2016+Math.ceil(samplesPerPeriod).asInstanceOf[Int])  ||
+        data(2016)==data(2016+Math.floor(samplesPerPeriod).asInstanceOf[Int])))
+      })
+     Injectable.injector = Guice.createInjector(
     new AbstractModule{
     	def configure() = bind(classOf[AudioSystem]).toInstance(mockAudioSystem);
     });
     
+    
     val midi = Midi()
     val audio = Audio()
-    val basicOscillator = Injectable.injector.getInstance(classOf[BasicOscillatorModule]);
-    
+    val basicOscillator = Injectable.injector.getInstance(classOf[BasicOscillatorModule]);    
     basicOscillator.setWave(basicOscillator.sine)
     
     // act 
@@ -51,38 +68,5 @@ class ScalaSynthIntegrationTest
     a4.on >> midi;
     
     Thread.sleep(3000);
-    
-    // assert
-    val period :Double = 1.asInstanceOf[Double]/440.asInstanceOf[Double]
-    val samplesPerPeriod :Double = period * 96000
-    var endMinusOneHundredSamples :Byte=0;
-    inSequence{
-	    (mockSourceDataLine.write _).verify(where{
-	      (data :Array[Byte],buf,len) =>
-	        println(
-	            "[samplesPerPeriod="+samplesPerPeriod+
-	            ", period="+period+
-	            ", data(1000)="+data(1000)+
-	            ",data(1000+s)={"+
-	            data(1000+Math.ceil(samplesPerPeriod).asInstanceOf[Int])+","+
-	            data(1000+Math.floor(samplesPerPeriod).asInstanceOf[Int])+
-	            "}]")
-	        endMinusOneHundredSamples = data(data.length-100)
-	        ((data(1000)==data(1000+Math.ceil(samplesPerPeriod).asInstanceOf[Int]) ||
-	        data(1000)==data(1000+Math.floor(samplesPerPeriod).asInstanceOf[Int])) &&
-	        (data(2016)==data(2016+Math.ceil(samplesPerPeriod).asInstanceOf[Int])  ||
-	        data(2016)==data(2016+Math.floor(samplesPerPeriod).asInstanceOf[Int])))
-	    })
-	    (mockSourceDataLine.write _).verify(where{
-	      (data :Array[Byte],buf,len) =>	        
-	        ((data(100+Math.ceil(samplesPerPeriod).asInstanceOf[Int])==endMinusOneHundredSamples   ||
-	         data(100+Math.floor(samplesPerPeriod).asInstanceOf[Int])==endMinusOneHundredSamples) &&
-	        (data(1000)==data(1000+Math.ceil(samplesPerPeriod).asInstanceOf[Int]) ||
-	        data(1000)==data(1000+Math.floor(samplesPerPeriod).asInstanceOf[Int])) &&
-	        (data(2016)==data(2016+Math.ceil(samplesPerPeriod).asInstanceOf[Int])  ||
-	        data(2016)==data(2016+Math.floor(samplesPerPeriod).asInstanceOf[Int])))
-	    })
-    }
   }
-  
 }

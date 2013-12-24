@@ -28,7 +28,7 @@ class BasicOscillatorModule
 	def square(d: Double): Double = if (sin(d) < 0) -1 else 1 
   	def sine(d: Double): Double = sin(d) 
   	def saw(d: Double): Double = (Pi - (d % (Pi * 2))) / Pi 
-	def key(n: Int): Int = (440f * pow((pow(2, 1 / 12f)), n - 49 - 12)).toInt 
+	def key(n: Int): Int = (440f * pow((pow(2, 1 / 12f)), n - 69)).toInt 
 	
 	var wave: (Double)=>Double = _
 	var playingNote: Note = a4.off
@@ -42,7 +42,7 @@ class BasicOscillatorModule
 	
 	override def nextAudioBuffer(output :Int)() :Array[Word] = 
 	  if(playingNote.playing) {
-	    tone(playingNote.value);
+	    tone(key(playingNote.value));
 	  } else { null }
 	
 	override def moreAudio(output :Int)() :Boolean = playingNote.playing
@@ -52,8 +52,11 @@ class BasicOscillatorModule
       for (j <- 0 until configuration.getWriteLength()) { 
     	  // We'll want to scale this out for larger sample size to 
     	  // to take advantage of the additional headroom
-          val angle = (j) / (configuration.getSampleRate() / tone) * 2.0 * Pi 
+          val angle = (j * 2.0 * Pi * tone) / configuration.getSampleRate 
+          
           val value = (wave(angle) * 100).toInt 
+          // println("[angle="+angle+",wave(angle)="+wave(angle)+",j="+j+",value="+value+"]")
+          
           buf = buf:::List(Word(configuration.getSampleSize,value))
       }
 	  buf.toArray

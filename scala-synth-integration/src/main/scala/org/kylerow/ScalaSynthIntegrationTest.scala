@@ -50,29 +50,37 @@ class ScalaSynthIntegrationTest
     (basicOscillator,1) >> audio;
     a4.on >> midi;
     
-    Thread.sleep(300000);
+    Thread.sleep(3000);
     
     // assert
-    val period = 1/440
-    val s = period * 96000
+    val period :Double = 1.asInstanceOf[Double]/440.asInstanceOf[Double]
+    val samplesPerPeriod :Double = period * 96000
     var endMinusOneHundredSamples :Byte=0;
     inSequence{
 	    (mockSourceDataLine.write _).verify(where{
 	      (data :Array[Byte],buf,len) =>
+	        println(
+	            "[samplesPerPeriod="+samplesPerPeriod+
+	            ", period="+period+
+	            ", data(1000)="+data(1000)+
+	            ",data(1000+s)={"+
+	            data(1000+Math.ceil(samplesPerPeriod).asInstanceOf[Int])+","+
+	            data(1000+Math.floor(samplesPerPeriod).asInstanceOf[Int])+
+	            "}]")
 	        endMinusOneHundredSamples = data(data.length-100)
-	        ((data(1000)==data(1000+Math.ceil(s).asInstanceOf[Int]) ||
-	        data(1000)==data(1000+Math.floor(s).asInstanceOf[Int])) &&
-	        (data(2016)==data(2016+Math.ceil(s).asInstanceOf[Int])  ||
-	        data(2016)==data(2016+Math.floor(s).asInstanceOf[Int])))
+	        ((data(1000)==data(1000+Math.ceil(samplesPerPeriod).asInstanceOf[Int]) ||
+	        data(1000)==data(1000+Math.floor(samplesPerPeriod).asInstanceOf[Int])) &&
+	        (data(2016)==data(2016+Math.ceil(samplesPerPeriod).asInstanceOf[Int])  ||
+	        data(2016)==data(2016+Math.floor(samplesPerPeriod).asInstanceOf[Int])))
 	    })
 	    (mockSourceDataLine.write _).verify(where{
 	      (data :Array[Byte],buf,len) =>	        
-	        ((data(100+Math.ceil(s).asInstanceOf[Int])==endMinusOneHundredSamples   ||
-	         data(100+Math.floor(s).asInstanceOf[Int])==endMinusOneHundredSamples) &&
-	        (data(1000)==data(1000+Math.ceil(s).asInstanceOf[Int]) ||
-	        data(1000)==data(1000+Math.floor(s).asInstanceOf[Int])) &&
-	        (data(2016)==data(2016+Math.ceil(s).asInstanceOf[Int])  ||
-	        data(2016)==data(2016+Math.floor(s).asInstanceOf[Int])))
+	        ((data(100+Math.ceil(samplesPerPeriod).asInstanceOf[Int])==endMinusOneHundredSamples   ||
+	         data(100+Math.floor(samplesPerPeriod).asInstanceOf[Int])==endMinusOneHundredSamples) &&
+	        (data(1000)==data(1000+Math.ceil(samplesPerPeriod).asInstanceOf[Int]) ||
+	        data(1000)==data(1000+Math.floor(samplesPerPeriod).asInstanceOf[Int])) &&
+	        (data(2016)==data(2016+Math.ceil(samplesPerPeriod).asInstanceOf[Int])  ||
+	        data(2016)==data(2016+Math.floor(samplesPerPeriod).asInstanceOf[Int])))
 	    })
     }
   }

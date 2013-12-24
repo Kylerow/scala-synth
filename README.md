@@ -7,9 +7,6 @@ It will be configurable and runnable via a DSL in the Scala REPL.
 
 In addition to a standalone mode integrating with standard midi and audio systems, we will target VST implementation using the Java VST wrapper.  This will broaden the potential usefulness of this synthesizer.
 
-***A note for testing in Linux - virtual midi is setup with the following: 
-<pre>sudo modprobe snd-virmidi</pre>
-
 Building & Using
 ==========
 There are two separate components:
@@ -28,6 +25,9 @@ Both can be built via Maven -
 To use the system - go into <b>scala-synth-main</b> - use the following command:
 
 <pre>mvn scala:console</pre>
+
+In Linux you may need to engage virtual midi: 
+<pre>sudo modprobe snd-virmidi</pre>
 
 Status
 =========

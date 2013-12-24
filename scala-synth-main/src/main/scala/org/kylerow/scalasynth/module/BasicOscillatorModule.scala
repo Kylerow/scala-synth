@@ -48,15 +48,14 @@ class BasicOscillatorModule
 	override def moreAudio(output :Int)() :Boolean = playingNote.playing
 	
 	private def tone(tone: Int) :Array[Word] = {
-	  var buf :Array[Word] = Array.fill(configuration.getWriteLength)(Word(0,0));
+	  var buf :List[Word] = List[Word]()
       for (j <- 0 until configuration.getWriteLength()) { 
     	  // We'll want to scale this out for larger sample size to 
     	  // to take advantage of the additional headroom
           val angle = (j) / (configuration.getSampleRate() / tone) * 2.0 * Pi 
           val value = (wave(angle) * 100).toInt 
-          
-          buf(j) = Word(configuration.getSampleSize,value)
-      } 
-	  buf
+          buf = buf:::List(Word(configuration.getSampleSize,value))
+      }
+	  buf.toArray
     }
 }

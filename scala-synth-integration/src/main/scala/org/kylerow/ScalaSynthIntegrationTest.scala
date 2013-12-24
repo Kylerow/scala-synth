@@ -6,20 +6,17 @@ import org.scalatest.junit.JUnitRunner
 import javax.sound.midi.MidiSystem
 import org.scalamock.scalatest.MockFactory
 import javax.sound.midi.MidiMessage
-import org.kylerow.scalasynth.midi.Midi
-import org.kylerow.scalasynth.midi.SSMidiMessage
-import javax.sound.midi.ShortMessage
-import org.kylerow.scalasynth.module.BasicOscillatorModule
-import org.kylerow.scalasynth.audio.Audio
-import org.kylerow.scalasynth.audio.Audio._
-import org.kylerow.scalasynth.module.Module
 import javax.sound.sampled.SourceDataLine
 import org.kylerow.scalasynth.audio.AudioPort
 import org.kylerow.scalasynth.audio.AudioSystem
 import org.kylerow.scalasynth.Injectable
 import com.google.inject.Guice
 import com.google.inject.AbstractModule
-import org.kylerow.scalasynth.note._
+import org.kylerow.scalasynth.midi.Midi
+import org.kylerow.scalasynth.audio.Audio
+import org.kylerow.scalasynth.module.BasicOscillatorModule
+import org.kylerow.scalasynth.audio.Audio._
+import org.kylerow.scalasynth.note.a4
 
 @RunWith(classOf[JUnitRunner])
 class ScalaSynthIntegrationTest 
@@ -44,13 +41,16 @@ class ScalaSynthIntegrationTest
     
     val midi = Midi()
     val audio = Audio()
-    val basicOscillator = new BasicOscillatorModule()
+    val basicOscillator = Injectable.injector.getInstance(classOf[BasicOscillatorModule]);
+    
     basicOscillator.setWave(basicOscillator.sine)
     
     // act 
     midi >> basicOscillator
     (basicOscillator,1) >> audio;
-    a4 >> midi;
+    a4.on >> midi;
+    
+    Thread.sleep(300000);
     
     // assert
     val period = 1/440

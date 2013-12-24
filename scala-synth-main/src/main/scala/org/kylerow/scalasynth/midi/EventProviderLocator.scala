@@ -21,6 +21,6 @@ class EventProviderLocator {
    		      	midiSystem
    		      		.getMidiDevice(x)
    		      		.getTransmitter())) 
-   		})).map(x=>TransmitterEventProvider(x))
+   		})).filter(_!=null).map(TransmitterEventProvider(_))
 	}
 }

@@ -8,7 +8,7 @@ object AvoidException {
 	  try{
 	    func()
 	  } catch {
-          case un :R  => null.asInstanceOf[R];
+	      case un :R => null.asInstanceOf[R]
           case ex :Throwable => println("Exception: "+ ex); throw ex;
       }
   }

@@ -36,6 +36,7 @@ class BasicOscillator
 	
 	var wave: (Double)=>Double = _
 	var playingNote: Note = a4.off
+	var angularOffset: Double = 0.0
 	
 	def setWave(wave: (Double)=>Double) = this.wave = wave;
 	
@@ -54,13 +55,16 @@ class BasicOscillator
 	private def tone(tone: Int) :Array[Word] = {
 	  var buf :List[Word] = List[Word]()
       for (j <- 0 until configuration.getWriteLength()) { 
-    	  val angle = (j * 2.0 * Pi * tone) / configuration.getSampleRate 
+    	  val angle = ((j * 2.0 * Pi * tone) / configuration.getSampleRate)+angularOffset 
           
           val value = (wave(angle) * 100).toInt 
-          logger.fine("[angle="+angle+",wave(angle)="+wave(angle)+",j="+j+",value="+value+"]")
+          logger.fine("[tone="+tone+", angularOffset="+angularOffset+", angle="+angle+",wave(angle)="+wave(angle)+",j="+j+",value="+value+"]")
           
           buf = buf:::List(Word(configuration.getSampleSize,value))
       }
+	  angularOffset = 
+	    (((configuration.getWriteLength() * 2.0 * Pi * tone) /
+	    		configuration.getSampleRate) + angularOffset) % (2.0*Pi)
 	  buf.toArray
     }
 }

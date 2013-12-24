@@ -10,7 +10,7 @@ import org.kylerow.scalasynth.SSConfiguration
 import org.kylerow.scalasynth.note._
 import java.util.logging.LogManager
 import java.util.logging.Logger
-import org.kylerow.util.fineLogging
+import org.kylerow.util._
 
 @RunWith(classOf[JUnitRunner])
 class BasicOsillatorSpec
@@ -69,7 +69,7 @@ class BasicOsillatorSpec
 	}
 	"Separate Audio Buffers" should "be aligned" in {
 		val logger = Logger.getLogger(getClass().getName())
-		fineLogging();
+		//fineLogging()
 		
 		val basicOscillator = new BasicOscillator
 		basicOscillator.wave=basicOscillator.sine

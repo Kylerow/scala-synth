@@ -6,7 +6,7 @@ import org.scalatest.matchers.ShouldMatchers
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.junit.JUnitRunner
 import org.kylerow.scalasynth.module.Module
-import org.kylerow.scalasynth.module.BasicOscillatorModule
+import org.kylerow.scalasynth.module.BasicOscillator
 import org.kylerow.scalasynth.Word
 
 @RunWith(classOf[JUnitRunner])
@@ -21,7 +21,7 @@ extends FlatSpec
 	import org.kylerow.scalasynth.audio.Audio._
 	
 	// arrange 
-    val myTuple = (new BasicOscillatorModule, 1)
+    val myTuple = (new BasicOscillator, 1)
     val mockAudio = mock[Audio]
     (mockAudio.attachSender _).expects( myTuple )
     

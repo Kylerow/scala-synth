@@ -8,16 +8,18 @@ import org.scalamock.scalatest.MockFactory
 import org.kylerow.scalasynth.midi.SSNoteOnMidiMessage
 import org.kylerow.scalasynth.SSConfiguration
 import org.kylerow.scalasynth.note._
+import java.util.logging.LogManager
+import java.util.logging.Logger
 
 @RunWith(classOf[JUnitRunner])
-class BasicOsillatorModuleSpec
+class BasicOsillatorSpec
 	extends FlatSpec 
 	with ShouldMatchers
 	with MockFactory{
   
 	"math" should "work :)" in 
   	{
-		val basicOscillatorModule = new BasicOscillatorModule
+		val basicOscillatorModule = new BasicOscillator
 		assert(
 		     1==basicOscillatorModule.square(45) && 
 		    -1==basicOscillatorModule.square(125),
@@ -36,7 +38,7 @@ class BasicOsillatorModuleSpec
 	
 	"Incoming midi note" should "be stored in the instance" in {
 	   // arrange
-	   var basicOscillatorModule = new BasicOscillatorModule
+	   var basicOscillatorModule = new BasicOscillator
 	  
 	   // act
 	   basicOscillatorModule.eventMessage(1)(a4);
@@ -48,13 +50,13 @@ class BasicOsillatorModuleSpec
 	"NextAudioBuffer" should "use byteTone and thus wave() to get the next set of samples" in {
 		// arrange
 		val mockWave = mockFunction[Double,Double]
-		val basicOscillatorModule = new BasicOscillatorModule
+		val basicOscillatorModule = new BasicOscillator
 		
 		mockWave expects (*)  returning 42 anyNumberOfTimes;
 		basicOscillatorModule.wave=mockWave
 		basicOscillatorModule.playingNote = a4.on;
 		basicOscillatorModule.configuration = new SSConfiguration();
-		
+		basicOscillatorModule.logger = Logger.getLogger("Basic-Oscillator")
 		// act
 		val result = basicOscillatorModule.nextAudioBuffer(1)();
 		

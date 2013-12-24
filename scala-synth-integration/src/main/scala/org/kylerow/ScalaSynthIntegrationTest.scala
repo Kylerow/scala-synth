@@ -14,7 +14,7 @@ import com.google.inject.Guice
 import com.google.inject.AbstractModule
 import org.kylerow.scalasynth.midi.Midi
 import org.kylerow.scalasynth.audio.Audio
-import org.kylerow.scalasynth.module.BasicOscillatorModule
+import org.kylerow.scalasynth.module.BasicOscillator
 import org.kylerow.scalasynth.audio.Audio._
 import org.kylerow.scalasynth.note.a4
 import java.util.logging.Logger
@@ -64,7 +64,7 @@ class ScalaSynthIntegrationTest
     
     val midi = Midi()
     val audio = Audio()
-    val basicOscillator = Injectable.injector.getInstance(classOf[BasicOscillatorModule]);    
+    val basicOscillator = Injectable.injector.getInstance(classOf[BasicOscillator]);    
     basicOscillator.setWave(basicOscillator.sine)
     
     //fineLogging();

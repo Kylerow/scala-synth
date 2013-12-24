@@ -19,7 +19,7 @@ import com.google.inject.Inject
  * 
  *  @Author KyleRow
  */
-class BasicOscillatorModule
+class BasicOscillator
 	extends Module 
 	   with EventInputs 
 	   with AudioOutputs{

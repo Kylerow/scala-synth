@@ -17,6 +17,10 @@ import org.kylerow.scalasynth.audio.Audio
 import org.kylerow.scalasynth.module.BasicOscillatorModule
 import org.kylerow.scalasynth.audio.Audio._
 import org.kylerow.scalasynth.note.a4
+import java.util.logging.Logger
+import java.util.logging.Level
+import java.util.logging.LogManager
+import org.kylerow.util.fineLogging
 
 @RunWith(classOf[JUnitRunner])
 class ScalaSynthIntegrationTest 
@@ -26,6 +30,8 @@ class ScalaSynthIntegrationTest
   
   "main midi input" should "drive basic oscillator" in 
   {
+    val logger = Logger.getLogger(this.getClass().getName());
+    
     // arrange
     val mockSourceDataLine = mock[SourceDataLine]
     val audioPort = new AudioPort
@@ -38,7 +44,7 @@ class ScalaSynthIntegrationTest
     val samplesPerPeriod :Double = period * 96000
     (mockSourceDataLine.write _) expects (where{
       (data :Array[Byte],buf,len) =>
-        println(
+        logger.fine(
             "[samplesPerPeriod="+samplesPerPeriod+
             ", period="+period+
             ", data(1000)="+data(1000)+
@@ -56,12 +62,13 @@ class ScalaSynthIntegrationTest
     	def configure() = bind(classOf[AudioSystem]).toInstance(mockAudioSystem);
     });
     
-    
     val midi = Midi()
     val audio = Audio()
     val basicOscillator = Injectable.injector.getInstance(classOf[BasicOscillatorModule]);    
     basicOscillator.setWave(basicOscillator.sine)
     
+    //fineLogging();
+	
     // act 
     midi >> basicOscillator
     (basicOscillator,1) >> audio;

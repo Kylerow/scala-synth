@@ -8,6 +8,8 @@ import org.kylerow.scalasynth.Word
 import org.kylerow.scalasynth.note._
 import org.kylerow.scalasynth.midi.EventInputs
 import org.kylerow.scalasynth.midi.Event
+import java.util.logging.Logger
+import com.google.inject.Inject
  
 /** 
  *  Basic oscillator module.
@@ -24,6 +26,8 @@ class BasicOscillatorModule
   
 	val numberOfEventInputs = 1
 	val numberOfAudioOutpus = 2
+	
+	@Inject var logger :Logger = _
 	
 	def square(d: Double): Double = if (sin(d) < 0) -1 else 1 
   	def sine(d: Double): Double = sin(d) 
@@ -50,12 +54,10 @@ class BasicOscillatorModule
 	private def tone(tone: Int) :Array[Word] = {
 	  var buf :List[Word] = List[Word]()
       for (j <- 0 until configuration.getWriteLength()) { 
-    	  // We'll want to scale this out for larger sample size to 
-    	  // to take advantage of the additional headroom
-          val angle = (j * 2.0 * Pi * tone) / configuration.getSampleRate 
+    	  val angle = (j * 2.0 * Pi * tone) / configuration.getSampleRate 
           
           val value = (wave(angle) * 100).toInt 
-          // println("[angle="+angle+",wave(angle)="+wave(angle)+",j="+j+",value="+value+"]")
+          logger.fine("[angle="+angle+",wave(angle)="+wave(angle)+",j="+j+",value="+value+"]")
           
           buf = buf:::List(Word(configuration.getSampleSize,value))
       }

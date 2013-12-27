@@ -11,6 +11,9 @@ import org.kylerow.scalasynth.note._
 import java.util.logging.LogManager
 import java.util.logging.Logger
 import org.kylerow.util._
+import org.kylerow.scalasynth.Injectable
+import com.google.inject.Guice
+import com.google.inject.AbstractModule
 
 @RunWith(classOf[JUnitRunner])
 class BasicOsillatorSpec
@@ -20,6 +23,7 @@ class BasicOsillatorSpec
   
 	"math" should "work :)" in 
   	{
+	 
 		val basicOscillatorModule = new BasicOscillator
 		assert(
 		     1==basicOscillatorModule.square(45) && 
@@ -39,7 +43,7 @@ class BasicOsillatorSpec
 	
 	"Incoming midi note" should "be stored in the instance" in {
 	   // arrange
-	   var basicOscillatorModule = new BasicOscillator
+	  var basicOscillatorModule = new BasicOscillator
 	  
 	   // act
 	   basicOscillatorModule.eventMessage(1)(a4);
@@ -70,7 +74,6 @@ class BasicOsillatorSpec
 	"Separate Audio Buffers" should "be aligned" in {
 		val logger = Logger.getLogger(getClass().getName())
 		//fineLogging()
-		
 		val basicOscillator = new BasicOscillator
 		basicOscillator.wave=basicOscillator.sine
 		basicOscillator.playingNote = a4.on;

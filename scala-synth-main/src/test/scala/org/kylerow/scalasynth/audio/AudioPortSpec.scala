@@ -7,6 +7,7 @@ import org.scalatest.matchers.ShouldMatchers
 import org.scalamock.scalatest.MockFactory
 import org.kylerow.scalasynth.Word
 import javax.sound.sampled.SourceDataLine
+import scala.collection.mutable.MutableList
 
 
 @RunWith(classOf[JUnitRunner])
@@ -16,7 +17,7 @@ extends FlatSpec
 	with MockFactory{
 	"sendData" should "attempt to put data to the dataline" in {
 	  // arrange
-	  val wordArray = Array(Word(8,42))
+	  val wordArray = MutableList(Word(8,42))
 	  val audioPort = new AudioPort
 	  audioPort.writeLength=10000;
 	  
@@ -35,7 +36,7 @@ extends FlatSpec
 	"sendData" should "put bytes in order, in larger word sizes" in {
 	  
 	  // arrange
-	  val wordArray = Array(Word(16,127),Word(16,1025),Word(16,128))
+	  val wordArray = MutableList(Word(16,127),Word(16,1025),Word(16,128))
 	  val audioPort = new AudioPort
 	  audioPort.writeLength=10000;
 	  

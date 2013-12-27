@@ -7,6 +7,7 @@ import org.scalatest.matchers.ShouldMatchers
 import org.scalamock.scalatest.MockFactory
 import scala.collection.mutable.HashMap
 import org.kylerow.scalasynth.Word
+import scala.collection.mutable.MutableList
 
 @RunWith(classOf[JUnitRunner])
 class ModuleRegistrySpec 
@@ -18,7 +19,8 @@ class ModuleRegistrySpec
 	  // arrange
 	  val module = new Module(){
 	    def moreAudio(x :Int)() :Boolean = {false}
-	    def nextAudioBuffer(x :Int)() :Array[Word] = {null}
+	    def nextAudioBuffer(x :Int)() :MutableList[Word] = {null}
+	    def getName()="";
 	  }
 	  val map = HashMap[String,Module]("Test" -> module)
 	  val moduleRegistry = new ModuleRegistry
@@ -35,7 +37,8 @@ class ModuleRegistrySpec
 	  // arrange
 	  val module = new Module(){
 	    def moreAudio(x :Int)() :Boolean = {false}
-	    def nextAudioBuffer(x :Int)() :Array[Word] = {null}
+	    def nextAudioBuffer(x :Int)() :MutableList[Word] = {null}
+	    def getName()="";
 	  }
 	  val map = HashMap[String,Module]()
 	  val moduleRegistry = new ModuleRegistry

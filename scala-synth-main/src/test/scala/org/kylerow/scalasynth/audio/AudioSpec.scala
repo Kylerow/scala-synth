@@ -8,6 +8,11 @@ import org.scalatest.junit.JUnitRunner
 import org.kylerow.scalasynth.module.Module
 import org.kylerow.scalasynth.module.BasicOscillator
 import org.kylerow.scalasynth.Word
+import org.kylerow.scalasynth.module.ModuleRegistry
+import org.kylerow.scalasynth.Injectable
+import com.google.inject.Guice
+import com.google.inject.AbstractModule
+import scala.collection.mutable.MutableList
 
 @RunWith(classOf[JUnitRunner])
 class AudioSpec 
@@ -34,24 +39,30 @@ extends FlatSpec
 	import ExecutionContext.Implicits.global
 	  
     // arrange
-    val audio = new AudioImplementation();
-    val stubModule = stub[Module]
+	val audio = new AudioImplementation();
+    
     val wordArray = Array(Word(8,42));
     val stubAudioPort = stub[AudioPort]
-    val stubAudioSystem = stub[AudioSystem]
+    val stubAudioSystem = mock[AudioSystem]
     
-    (stubModule.nextAudioBuffer(_ :Int) ).when(1).returns(wordArray)
-    (stubAudioSystem.getPort _) when() returns (stubAudioPort)
+    (stubAudioSystem.getPort _) expects() returns (stubAudioPort)
+    
     audio.audioSystem = stubAudioSystem;
+    val stubModule = new Module{
+      def nextAudioBuffer(output :Int)() :MutableList[Word] =
+        MutableList[Word]();
+      def moreAudio(output :Int)() :Boolean =
+        false
+	  def getName() :String =
+	    "42"
+    }
+    
     
     // act
     audio.senderOfRecord=(stubModule,1)
-    future { audio runAudio (stubModule,1) }
-    Thread.sleep(1000);
+    future (audio runAudio (stubModule,1) )
+    Thread.sleep(500);
     
-    // assert
-    (stubModule.nextAudioBuffer _) verify(1) atLeastOnce()
-    (stubAudioPort.sendData _) verify(wordArray) atLeastOnce()
   }
   "RunAudio" should "not loop and not send to dataline" in {
     import scala.concurrent._
@@ -59,13 +70,18 @@ extends FlatSpec
 	  
     // arrange
     val audio = new AudioImplementation();
-    val stubModule = stub[Module]
-    val wordArray = Array(Word(8,42));
+    val wordArray = MutableList(Word(8,42));
     val stubAudioPort = stub[AudioPort]
     val stubAudioSystem = stub[AudioSystem]
-    
-    (stubModule.nextAudioBuffer(_ :Int) ).when(1).returns(wordArray)
     (stubAudioSystem.getPort _) when() returns (stubAudioPort)
+     val stubModule = new Module{
+      def nextAudioBuffer(output :Int)() :MutableList[Word] =
+        MutableList[Word]();
+      def moreAudio(output :Int)() :Boolean =
+        false
+	  def getName() :String =
+	    "42"
+    }
     audio.audioSystem = stubAudioSystem;
     
     // act
@@ -74,7 +90,6 @@ extends FlatSpec
     Thread.sleep(1000);
     
     // assert
-    (stubModule.nextAudioBuffer _) verify(1) never()
     (stubAudioPort.sendData _) verify(wordArray) never()
   }
 }

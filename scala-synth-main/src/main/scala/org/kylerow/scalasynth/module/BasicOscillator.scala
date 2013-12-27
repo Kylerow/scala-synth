@@ -10,6 +10,7 @@ import org.kylerow.scalasynth.midi.EventInputs
 import org.kylerow.scalasynth.midi.Event
 import java.util.logging.Logger
 import com.google.inject.Inject
+import scala.collection.mutable.MutableList
  
 /** 
  *  Basic oscillator module.
@@ -24,6 +25,8 @@ class BasicOscillator
 	   with EventInputs 
 	   with AudioOutputs{
   
+	def getName() :String = "";
+	
 	val numberOfEventInputs = 1
 	val numberOfAudioOutpus = 2
 	
@@ -45,26 +48,25 @@ class BasicOscillator
 	  	case x :Note => playingNote = x
 	}
 	
-	override def nextAudioBuffer(output :Int)() :Array[Word] = 
+	override def nextAudioBuffer(output :Int)() :MutableList[Word] = 
 	  if(playingNote.playing) {
 	    tone(key(playingNote.value));
 	  } else { null }
 	
 	override def moreAudio(output :Int)() :Boolean = playingNote.playing
 	
-	private def tone(tone: Int) :Array[Word] = {
-	  var buf :List[Word] = List[Word]()
+	private def tone(tone: Int) :MutableList[Word] = {
+	  var buf :MutableList[Word] = MutableList[Word]()
       for (j <- 0 until configuration.getWriteLength()) { 
     	  val angle = ((j * 2.0 * Pi * tone) / configuration.getSampleRate)+angularOffset 
-          
           val value = (wave(angle) * 100).toInt 
           logger.fine("[tone="+tone+", angularOffset="+angularOffset+", angle="+angle+",wave(angle)="+wave(angle)+",j="+j+",value="+value+"]")
           
-          buf = buf:::List(Word(configuration.getSampleSize,value))
+          buf += Word(configuration.getSampleSize,value);
       }
 	  angularOffset = 
 	    (((configuration.getWriteLength() * 2.0 * Pi * tone) /
 	    		configuration.getSampleRate) + angularOffset) % (2.0*Pi)
-	  buf.toArray
+	  buf
     }
 }

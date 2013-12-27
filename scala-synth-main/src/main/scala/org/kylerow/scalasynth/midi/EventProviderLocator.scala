@@ -3,24 +3,20 @@ package org.kylerow.scalasynth.midi
 import com.google.inject.Inject
 import scala.collection.JavaConversions._
 import org.kylerow.scalasynth.util.AvoidException._
+import scala.collection.mutable.MutableList
 
 class EventProviderLocator {
 	@Inject var midiSystem :MidiSystem = _;
 	
 	def getAllSystemMidiTransmitters() :List[EventProvider] = {
-     midiSystem
-   		.getMidiDeviceInfo()
-   		.flatMap(x => avoidMidiUnavailableException (()=>{
-   		  midiSystem
-   		  	.getMidiDevice(x)
-   		  	.open(); 
-   		  midiSystem
-   		  	.getMidiDevice(x)
-   		  	.getTransmitters()
-   		    .toList.::(avoidAll(()=>
-   		      	midiSystem
-   		      		.getMidiDevice(x)
-   		      		.getTransmitter())) 
-   		})).filter(_!=null).map(TransmitterEventProvider(_))
+	   midiSystem.getMidiDeviceInfo().flatMap {
+	     (midiDeviceInfo) =>
+		     val device = midiSystem.getMidiDevice(midiDeviceInfo);
+		     device.open();
+		     val transmitters = MutableList[Transmitter]();
+		     avoidAll(()=>transmitters+=device.getTransmitter())
+		     avoidAll(()=>transmitters.addAll(transmitters));
+		     transmitters.filter(_!=null).map(TransmitterEventProvider(_))
+	   }
 	}
 }

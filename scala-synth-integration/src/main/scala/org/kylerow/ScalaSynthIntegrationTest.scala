@@ -13,14 +13,14 @@ import org.kylerow.scalasynth.Injectable
 import com.google.inject.Guice
 import com.google.inject.AbstractModule
 import org.kylerow.scalasynth.midi.Midi
-import org.kylerow.scalasynth.audio.Audio
-import org.kylerow.scalasynth.module.BasicOscillator
-import org.kylerow.scalasynth.audio.Audio._
 import org.kylerow.scalasynth.note.a4
 import java.util.logging.Logger
 import java.util.logging.Level
 import java.util.logging.LogManager
 import org.kylerow.util.fineLogging
+import org.kylerow.scalasynth.audio.Audio
+import org.kylerow.scalasynth.audio.Audio._
+import org.kylerow.scalasynth.module.BasicOscillator
 
 @RunWith(classOf[JUnitRunner])
 class ScalaSynthIntegrationTest 

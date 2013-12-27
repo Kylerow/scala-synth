@@ -116,6 +116,8 @@
             <include>**/*Suite.*</include>
             <include>**/*Spec.*</include>
           </includes>
+          <!--forkCount>N</forkCount>
+          <reuseForks>false</reuseForks-->
         </configuration>
       </plugin>
     </plugins>

@@ -7,9 +7,9 @@ class MidiDevice {
 	  this.midiDevice = midiDevice;
 	  this
 	}
-  def getTransmitter() = Transmitter(midiDevice.getTransmitter())
-  def getTransmitters() = midiDevice.getTransmitters().map(x=>Transmitter(x)).toList
-  def open() = midiDevice.open();
+  def getTransmitter = Transmitter(midiDevice.getTransmitter())
+  def getTransmitters = midiDevice.getTransmitters().map(x=>Transmitter(x)).toList
+  def open = midiDevice.open();
 }
 object MidiDevice {
   def apply(midiDevice :javax.sound.midi.MidiDevice) = 

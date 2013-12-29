@@ -9,13 +9,13 @@ class EventProviderLocator {
 	@Inject var midiSystem :MidiSystem = _;
 	
 	def getAllSystemMidiTransmitters() :List[EventProvider] = {
-	   midiSystem.getMidiDeviceInfo().flatMap {
+	   midiSystem.getMidiDeviceInfo.flatMap {
 	     (midiDeviceInfo) =>
 		     val device = midiSystem.getMidiDevice(midiDeviceInfo);
-		     device.open();
+		     device.open;
 		     val transmitters = MutableList[Transmitter]();
-		     avoidAll(()=>transmitters+=device.getTransmitter())
-		     avoidAll(()=>transmitters.addAll(transmitters));
+		     avoidAll(()=>transmitters+=device.getTransmitter)
+		     avoidAll(()=>transmitters.addAll(device.getTransmitters));
 		     transmitters.filter(_!=null).map(TransmitterEventProvider(_))
 	   }
 	}

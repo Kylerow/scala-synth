@@ -12,21 +12,26 @@ import org.kylerow.scalasynth.Word
  * @Author Kyle
  */
 trait Audio{
-  def attachSender(sender :(Module,Int) );
+  def attachSender(sender :Module);
 }
 
-object Audio extends Injectable{
+object Audio {
   
-  def apply() :Audio = injector.getInstance(classOf[AudioImplementation])  
-  
-  implicit class audioOutputCapture (param :(Module,Int))
-  {	def >> (audio :Audio) = audio attachSender param }
+  def apply() :Audio = 
+    Injectable.injector.getInstance(classOf[AudioImplementation])  
+    
+  implicit class audioOutputCapture (param :Module)
+  {	
+    def >> (audio :Audio) = {
+      audio attachSender param 
+    }
+  }
 }
 
 class AudioImplementation extends Audio {
 	@Inject var audioSystem :AudioSystem = _
   	
-	override def attachSender(sender :(Module,Int) ) = {
+	override def attachSender(sender :Module ) = {
   	  import scala.concurrent._
 	  import ExecutionContext.Implicits.global
 	  
@@ -34,12 +39,12 @@ class AudioImplementation extends Audio {
 	  future ( runAudio(sender) )
   	}
   	
-	var senderOfRecord :(Module,Int) = _;
+	var senderOfRecord :Module = _;
 	
-  	def runAudio(audioSender :(Module,Int)){
+  	def runAudio(audioSender :Module){
   	  val audioPort = audioSystem.getPort();
   	  val dataSource =
-  	    audioSender._1.nextAudioBuffer(audioSender._2) _;
+  	    audioSender.nextAudioBuffer(1) _;
   	  while(audioSender == this.senderOfRecord) 
   	    audioPort.sendData(dataSource());
   	}

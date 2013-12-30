@@ -6,8 +6,11 @@ import org.kylerow.scalasynth.SSConfiguration
 import org.kylerow.scalasynth.Word
 import org.kylerow.scalasynth.Injectable
 import scala.collection.mutable.MutableList
+import org.kylerow.scalasynth.audio.AudioOutputs
+import org.kylerow.scalasynth.midi.EventReceiver
 
-trait Module extends Injectable{
+trait Module extends Injectable {
+  
 	@Inject var moduleRegistry :ModuleRegistry = _;
 	@Inject var configuration :SSConfiguration = _;
 	

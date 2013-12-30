@@ -71,7 +71,7 @@ class ScalaSynthIntegrationTest
 	
     // act 
     midi >> basicOscillator
-    (basicOscillator,1) >> audio;
+    basicOscillator >> audio;
     a4.on >> midi;
     
     Thread.sleep(3000);

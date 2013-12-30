@@ -46,7 +46,7 @@ class BasicOsillatorSpec
 	  var basicOscillatorModule = new BasicOscillator
 	  
 	   // act
-	   basicOscillatorModule.eventMessage(1)(a4);
+	   basicOscillatorModule.receive(a4)
 	  
 	   // assert
 	   assert(basicOscillatorModule.playingNote==a4)

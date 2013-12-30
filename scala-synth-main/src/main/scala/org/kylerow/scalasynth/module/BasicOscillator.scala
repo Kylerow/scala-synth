@@ -22,9 +22,7 @@ import org.kylerow.scalasynth.Injectable
  *  @Author KyleRow
  */
 private[module] class BasicOscillator
-	extends Module 
-	   with EventInputs 
-	   with AudioOutputs{
+	extends BasicModule{
   
 	def getName() :String = "";
 	
@@ -43,11 +41,6 @@ private[module] class BasicOscillator
 	var angularOffset: Double = 0.0
 	
 	def setWave(wave: (Double)=>Double) = this.wave = wave;
-	
-	override def eventMessage(input :Int)(message :Event) =
-    message match {
-	  	case x :Note => playingNote = x
-	}
 	
 	override def nextAudioBuffer(output :Int)() :MutableList[Word] = 
 	  if(playingNote.playing) {

@@ -8,6 +8,7 @@ import com.google.inject.Inject
 import org.kylerow.scalasynth
 import javax.sound.midi
 import org.kylerow.scalasynth.note._
+import org.kylerow.scalasynth.module.BasicModule
 
 class Midi extends EventProvider{
 	@Inject var eventProviderLocator :EventProviderLocator = _ 
@@ -17,6 +18,7 @@ class Midi extends EventProvider{
       val systemProviders = eventProviderLocator.getAllSystemMidiTransmitters();
       val eventProviders = systemProviders ::: List(this);
       eventConnector.connect(eventProviders,eventReceiver);
+      this
     }
     
     def >> (receiver :EventReceiver) = 

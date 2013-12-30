@@ -27,12 +27,11 @@ extends FlatSpec
 	
 	// arrange 
 	val mockModule = mock[Module]
-    val myTuple = (mockModule, 1)
     val mockAudio = mock[Audio]
-    (mockAudio.attachSender _).expects( myTuple )
+    (mockAudio.attachSender _).expects( mockModule )
     
     // act
-    myTuple >> mockAudio
+    mockModule >> mockAudio
   }
   
   "RunAudio" should "loop and send to dataline" in {
@@ -60,8 +59,8 @@ extends FlatSpec
     
     
     // act
-    audio.senderOfRecord=(stubModule,1)
-    future (audio runAudio (stubModule,1) )
+    audio.senderOfRecord=stubModule
+    future (audio runAudio stubModule )
     Thread.sleep(500);
     
   }
@@ -87,7 +86,7 @@ extends FlatSpec
     
     // act
     audio.senderOfRecord=null;
-    future { audio runAudio (stubModule,1) }
+    future { audio runAudio stubModule}
     Thread.sleep(1000);
     
     // assert

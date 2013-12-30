@@ -23,8 +23,6 @@ import org.kylerow.scalasynth.Injectable
  */
 private[module] class BasicOscillator
 	extends BasicModule{
-  
-	def getName() :String = "";
 	
 	val numberOfEventInputs = 1
 	val numberOfAudioOutpus = 2
@@ -42,10 +40,15 @@ private[module] class BasicOscillator
 	
 	def setWave(wave: (Double)=>Double) = this.wave = wave;
 	
-	override def nextAudioBuffer(output :Int)() :MutableList[Word] = 
-	  if(playingNote.playing) {
-	    tone(key(playingNote.value));
-	  } else { null }
+	override def receive(event :Event) = 
+	 event match {
+	  case note :Note => playingNote = note.on
+	} 
+	
+	override def nextAudioBuffer(output :Int)() :MutableList[Word] = {
+	  while(!playingNote.playing){Thread.sleep(10)}
+	  tone(key(playingNote.value));
+	}
 	
 	override def moreAudio(output :Int)() :Boolean = playingNote.playing
 	

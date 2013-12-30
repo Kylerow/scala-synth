@@ -71,6 +71,30 @@ class BasicOsillatorSpec
 				result(1977).value==4200)
 		assert( result.length==4096 )
 	}
+	it should "block if there isn't a tone to play" in {
+	  // use a future to check if it has completed before 
+	  // I give it a note to play
+	  
+	  // arrange
+	  val basicOscillator = new BasicOscillator();
+	  
+	  // act
+	  import scala.concurrent._
+	  import ExecutionContext.Implicits.global
+	  
+	  val result = future {
+	    basicOscillator.nextAudioBuffer(1)();
+	  }
+	  Thread.sleep(1000);
+	  val result_completion1 = result.isCompleted
+	  
+	  basicOscillator.playingNote = a4.on;
+	  Thread.sleep(100);
+	  val result_completion2 = result.isCompleted
+	  
+	  // assert
+	  assert(!result_completion1 && result_completion2)
+	}
 	"Separate Audio Buffers" should "be aligned" in {
 		val logger = Logger.getLogger(getClass().getName())
 		//fineLogging()

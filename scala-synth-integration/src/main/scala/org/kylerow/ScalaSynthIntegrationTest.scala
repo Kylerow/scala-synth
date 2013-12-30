@@ -28,7 +28,7 @@ class ScalaSynthIntegrationTest
 	with ShouldMatchers
 	with MockFactory{
   
-  "main midi input" should "drive basic oscillator" in 
+  "midi input" should "drive basic oscillator" in 
   {
     val logger = Logger.getLogger(this.getClass().getName());
     
@@ -75,5 +75,53 @@ class ScalaSynthIntegrationTest
     a4.on >> midi;
     
     Thread.sleep(3000);
+  }
+  
+  ignore /*it*/ should "send event to Receiver when initiated by a user" in{
+     val logger = Logger.getLogger(this.getClass().getName());
+    
+    // arrange
+    val mockSourceDataLine = mock[SourceDataLine]
+    val audioPort = new AudioPort
+    audioPort.sourceDataLine = mockSourceDataLine
+    
+    val mockAudioSystem = mock[AudioSystem]
+    (mockAudioSystem.getPort _).expects().returning(audioPort);
+     
+    val period :Double = 1.asInstanceOf[Double]/440.asInstanceOf[Double]
+    val samplesPerPeriod :Double = period * 96000
+    (mockSourceDataLine.write _) expects (where{
+      (data :Array[Byte],buf,len) =>
+        logger.fine(
+            "[samplesPerPeriod="+samplesPerPeriod+
+            ", period="+period+
+            ", data(1000)="+data(1000)+
+            ",data(1000+s)={"+
+            data(1000+Math.ceil(samplesPerPeriod).asInstanceOf[Int])+","+
+            data(1000+Math.floor(samplesPerPeriod).asInstanceOf[Int])+
+            "}]")
+        ((data(1000)==data(1000+Math.ceil(samplesPerPeriod).asInstanceOf[Int]) ||
+        data(1000)==data(1000+Math.floor(samplesPerPeriod).asInstanceOf[Int])) &&
+        (data(2016)==data(2016+Math.ceil(samplesPerPeriod).asInstanceOf[Int])  ||
+        data(2016)==data(2016+Math.floor(samplesPerPeriod).asInstanceOf[Int])))
+      })
+     Injectable.injector = Guice.createInjector(
+    new AbstractModule{
+    	def configure() = bind(classOf[AudioSystem]).toInstance(mockAudioSystem);
+    });
+    
+    val midi = Midi()
+    val audio = Audio()
+    val basicOscillator = BasicOscillator("TestOscillator") 
+    basicOscillator.setWave(basicOscillator.sine)
+    
+    fineLogging();
+	
+    // act 
+    midi >> basicOscillator
+    basicOscillator >> audio;
+    
+    println(" - - WAITING - -  Please Provide MIDI Input!");
+    Thread.sleep(30000);
   }
 }

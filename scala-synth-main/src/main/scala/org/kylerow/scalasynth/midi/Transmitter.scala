@@ -15,7 +15,7 @@ class Transmitter {
   	  transmitter.setReceiver(
   	       new Receiver{
   	    	   def send( msg :MidiMessage, timeStamp :Long ) =
-  	    	     callback(a4)
+  	    	     callback(a4.on)
 			   def close() = {}
   	       })
   	}

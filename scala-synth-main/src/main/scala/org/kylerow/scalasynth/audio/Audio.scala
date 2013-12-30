@@ -45,8 +45,9 @@ class AudioImplementation extends Audio {
   	  val audioPort = audioSystem.getPort();
   	  val dataSource =
   	    audioSender.nextAudioBuffer(1) _;
-  	  while(audioSender == this.senderOfRecord) 
+  	  while(audioSender == this.senderOfRecord) {
   	    audioPort.sendData(dataSource());
+  	  }
   	}
 }
 

@@ -8,12 +8,15 @@ import org.kylerow.scalasynth.audio.Audio
 import org.kylerow.scalasynth.module.ModuleRegistry
 import com.google.inject.Inject
 import org.kylerow.scalasynth.Injectable
+import org.kylerow.util.fineLogging
 
 object synth {
 	object primary {
 	  def apply (module :BasicModule) = {
+	    //fineLogging();
 	    Midi() >> module 
 	    module >> Audio()
+	    println("Basic audio and midi attached to ["+module+"].")
 	  }
 	}
 	implicit class moduleString (moduleName :String) extends Injectable{

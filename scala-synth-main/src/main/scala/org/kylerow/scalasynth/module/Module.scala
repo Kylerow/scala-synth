@@ -8,12 +8,11 @@ import org.kylerow.scalasynth.Injectable
 import scala.collection.mutable.MutableList
 
 trait Module extends Injectable{
-	var moduleRegistry :ModuleRegistry = _;
-	//moduleRegistry = injector.getInstance(classOf[ModuleRegistry]);
-	//moduleRegistry.put(getName(),this)
-	
+	@Inject var moduleRegistry :ModuleRegistry = _;
 	@Inject var configuration :SSConfiguration = _;
+	
 	def nextAudioBuffer(output :Int)() :MutableList[Word];
 	def moreAudio(output :Int)() :Boolean;
-	def getName() :String;
+	
+	final def register(name :String) = moduleRegistry.put(name,this);
 }

@@ -26,7 +26,8 @@ extends FlatSpec
 	import org.kylerow.scalasynth.audio.Audio._
 	
 	// arrange 
-    val myTuple = (new BasicOscillator, 1)
+	val mockModule = mock[Module]
+    val myTuple = (mockModule, 1)
     val mockAudio = mock[Audio]
     (mockAudio.attachSender _).expects( myTuple )
     

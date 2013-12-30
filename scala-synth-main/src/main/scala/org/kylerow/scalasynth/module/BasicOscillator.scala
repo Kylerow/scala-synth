@@ -11,6 +11,7 @@ import org.kylerow.scalasynth.midi.Event
 import java.util.logging.Logger
 import com.google.inject.Inject
 import scala.collection.mutable.MutableList
+import org.kylerow.scalasynth.Injectable
  
 /** 
  *  Basic oscillator module.
@@ -20,7 +21,7 @@ import scala.collection.mutable.MutableList
  * 
  *  @Author KyleRow
  */
-class BasicOscillator
+private[module] class BasicOscillator
 	extends Module 
 	   with EventInputs 
 	   with AudioOutputs{
@@ -69,4 +70,8 @@ class BasicOscillator
 	    		configuration.getSampleRate) + angularOffset) % (2.0*Pi)
 	  buf
     }
+}
+
+object BasicOscillator extends Injectable {
+  def apply(name :String) = injector.getInstance(classOf[BasicOscillator]).register(name).asInstanceOf[BasicOscillator];
 }

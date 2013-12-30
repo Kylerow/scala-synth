@@ -14,5 +14,6 @@ trait Module extends Injectable{
 	def nextAudioBuffer(output :Int)() :MutableList[Word];
 	def moreAudio(output :Int)() :Boolean;
 	
-	final def register(name :String) = moduleRegistry.put(name,this);
+	def register(name :String) :Module = 
+	  moduleRegistry.put(name,this);
 }

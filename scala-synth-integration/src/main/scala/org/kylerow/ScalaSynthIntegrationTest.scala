@@ -64,7 +64,7 @@ class ScalaSynthIntegrationTest
     
     val midi = Midi()
     val audio = Audio()
-    val basicOscillator = Injectable.injector.getInstance(classOf[BasicOscillator]);    
+    val basicOscillator = BasicOscillator("TestOscillator") 
     basicOscillator.setWave(basicOscillator.sine)
     
     //fineLogging();

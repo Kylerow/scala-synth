@@ -9,7 +9,8 @@ class ModuleRegistry {
 	def get(key :String) :Module = 
 	  registry.get(key).get
 	  
-	def put(entry :(String,Module)) =
-	  registry put (entry._1,entry._2)
-	
+	def put(entry :(String,Module)) :Module = {
+	  registry put (entry._1,entry._2);
+	  entry._2
+	}
 }

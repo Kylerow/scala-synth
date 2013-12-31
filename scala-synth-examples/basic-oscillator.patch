@@ -1,5 +1,9 @@
 import org.kylerow.synth._
 import org.kylerow.scalasynth.module._
 
-primary { BasicOscillator("o1") }
+primary { 
+   val o1 = BasicOscillator("o1")
+   o1.setWave(o1.sine)
+   o1
+}
 

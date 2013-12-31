@@ -115,11 +115,9 @@ class ScalaSynthIntegrationTest
     val basicOscillator = BasicOscillator("TestOscillator") 
     basicOscillator.setWave(basicOscillator.sine)
     
-    fineLogging();
+    //fineLogging();
 	
     // act 
-    /*midi >> basicOscillator
-    basicOscillator >> audio;*/
     import org.kylerow.synth._
     primary { basicOscillator }
     

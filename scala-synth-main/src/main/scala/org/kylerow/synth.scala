@@ -13,7 +13,7 @@ import org.kylerow.util.fineLogging
 object synth {
 	object primary {
 	  def apply (module :BasicModule) = {
-	    //fineLogging();
+	    fineLogging();
 	    Midi() >> module 
 	    module >> Audio()
 	    println("Basic audio and midi attached to ["+module+"].")

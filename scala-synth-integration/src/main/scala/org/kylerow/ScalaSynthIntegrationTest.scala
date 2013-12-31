@@ -118,8 +118,10 @@ class ScalaSynthIntegrationTest
     fineLogging();
 	
     // act 
-    midi >> basicOscillator
-    basicOscillator >> audio;
+    /*midi >> basicOscillator
+    basicOscillator >> audio;*/
+    import org.kylerow.synth._
+    primary { basicOscillator }
     
     println(" - - WAITING - -  Please Provide MIDI Input!");
     Thread.sleep(30000);

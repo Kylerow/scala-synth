@@ -4,7 +4,7 @@ import javax.sound.sampled.AudioFormat
 import javax.sound.sampled.SourceDataLine
 
 class AudioPortCreator {
-	var creatorFunctionMap = Map("JavaSound"-> (createJavaSoundAudioPort _))
+	var creatorFunctionMap = Map("JavaSound" -> (createJavaSoundAudioPort _))
 	
 	def create(portType :String, audioPortOptions :AudioPortOptions) :AudioPort = 
 	  creatorFunctionMap(portType)(audioPortOptions)

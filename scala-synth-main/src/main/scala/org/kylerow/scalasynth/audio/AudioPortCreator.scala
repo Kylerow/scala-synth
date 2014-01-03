@@ -1,19 +1,20 @@
 package org.kylerow.scalasynth.audio
 
+import javax.sound.sampled.AudioFormat
+import javax.sound.sampled.SourceDataLine
+
 class AudioPortCreator {
-	def create(portType :String, audioPortOptions :AudioPortOptions) :AudioPort = {null}
-  /*
+	var creatorFunctionMap = Map("JavaSound"-> (createJavaSoundAudioPort _))
+	
+	def create(portType :String, audioPortOptions :AudioPortOptions) :AudioPort = 
+	  creatorFunctionMap(portType)(audioPortOptions)
+ 
+	def createJavaSoundAudioPort(audioPortOptions :AudioPortOptions) :AudioPort = {	
 	  val af = new AudioFormat(
- 	    	        config.getSampleRate, 
- 	    	        config.getSampleSize,  	    	        
+ 	    	        audioPortOptions.sampleRate.asInstanceOf[Float], 
+ 	    	        audioPortOptions.sampleSize,  	    	        
  	    	        1, 
  	    	        true, false);
-	  
-	/*  val dataLine = 
- 	    javax.sound.sampled.
- 	    	AudioSystem
- 	    	.getSourceDataLine(af)   
- 	  */
  	    	
  	  val mixers = javax.sound.sampled.AudioSystem.getMixerInfo()
  	  val mixer = 
@@ -22,11 +23,12 @@ class AudioPortCreator {
  	  val dataLines = mixer.getSourceLineInfo
  	  val dataLineInfo = (dataLines.filter(_.getLineClass().isAssignableFrom(classOf[SourceDataLine])))(0)
  	  val dataLine = mixer.getLine(dataLineInfo).asInstanceOf[SourceDataLine]
- 	  dataLine.open(af,config.getWriteLength())
+ 	  dataLine.open(af,audioPortOptions.writeLength)
  	  dataLine.start();
 	  
- 	  val audioPort = new AudioPort();
+ 	  val audioPort = new JavaSoundAudioPort();
  	  audioPort.sourceDataLine = dataLine
- 	  audioPort.writeLength = config.getWriteLength()
-  	  audioPort;*/
+ 	  audioPort.writeLength = audioPortOptions.writeLength
+  	  audioPort;
+	}
 }

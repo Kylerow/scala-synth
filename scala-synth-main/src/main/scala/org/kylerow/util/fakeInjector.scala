@@ -19,4 +19,10 @@ object fakeInjector {
 		  });
 	  this
 	} 
+	def empty = {
+	  Injectable.injector = Injectable.injector.createChildInjector(new AbstractModule{
+		  def configure() = 
+		  {}   
+	  });
+	}
 }

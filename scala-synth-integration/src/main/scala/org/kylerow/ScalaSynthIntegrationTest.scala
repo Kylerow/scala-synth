@@ -21,6 +21,9 @@ import org.kylerow.util.fineLogging
 import org.kylerow.scalasynth.audio.Audio
 import org.kylerow.scalasynth.audio.Audio._
 import org.kylerow.scalasynth.module.BasicOscillator
+import org.kylerow.util.fakeInjector
+import org.kylerow.scalasynth.audio.JavaSoundAudioPort
+
 
 @RunWith(classOf[JUnitRunner])
 class ScalaSynthIntegrationTest 
@@ -28,13 +31,13 @@ class ScalaSynthIntegrationTest
 	with ShouldMatchers
 	with MockFactory{
   
-  "midi input" should "drive basic oscillator" in 
+  ignore should "drive basic oscillator" in 
   {
     val logger = Logger.getLogger(this.getClass().getName());
     
     // arrange
     val mockSourceDataLine = mock[SourceDataLine]
-    val audioPort = new AudioPort
+    val audioPort = new JavaSoundAudioPort
     audioPort.sourceDataLine = mockSourceDataLine
     
     val mockAudioSystem = mock[AudioSystem]
@@ -82,7 +85,7 @@ class ScalaSynthIntegrationTest
     
     // arrange
     val mockSourceDataLine = mock[SourceDataLine]
-    val audioPort = new AudioPort
+    val audioPort = new JavaSoundAudioPort
     audioPort.sourceDataLine = mockSourceDataLine
     
     val mockAudioSystem = mock[AudioSystem]
@@ -123,5 +126,24 @@ class ScalaSynthIntegrationTest
     
     println(" - - WAITING - -  Please Provide MIDI Input!");
     Thread.sleep(30000);
+  }
+  "midi input" should "Play out to the actual speaker" in {
+     val logger = Logger.getLogger(this.getClass().getName());
+    fakeInjector empty
+    
+    // arrange
+    val midi = Midi()
+    val audio = Audio()
+    val basicOscillator = BasicOscillator("TestOscillator") 
+    basicOscillator.setWave(basicOscillator.sine)
+    
+    //fineLogging();
+	
+    // act 
+    import org.kylerow.synth._
+    primary { basicOscillator }
+    
+    println(" - - WAITING - -  Please Provide MIDI Input!");
+    Thread.sleep(300000);
   }
 }

@@ -11,14 +11,14 @@ import scala.collection.mutable.MutableList
 
 
 @RunWith(classOf[JUnitRunner])
-class AudioPortSpec 
+class JavaSoundAudioPortSpec 
 extends FlatSpec 
 	with ShouldMatchers
 	with MockFactory{
 	"sendData" should "attempt to put data to the dataline" in {
 	  // arrange
 	  val wordArray = MutableList(Word(8,42))
-	  val audioPort = new AudioPort
+	  val audioPort = new JavaSoundAudioPort
 	  audioPort.writeLength=10000;
 	  
 	  val dataLine = mock[SourceDataLine]
@@ -37,7 +37,7 @@ extends FlatSpec
 	  
 	  // arrange
 	  val wordArray = MutableList(Word(16,127),Word(16,1025),Word(16,128))
-	  val audioPort = new AudioPort
+	  val audioPort = new JavaSoundAudioPort
 	  audioPort.writeLength=10000;
 	  
 	  val dataLine = mock[SourceDataLine]

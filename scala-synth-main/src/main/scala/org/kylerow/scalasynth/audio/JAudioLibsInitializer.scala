@@ -8,6 +8,7 @@ import org.jaudiolibs.audioservers.ext.ClientID
 import org.jaudiolibs.audioservers.ext.Connections
 import scala.concurrent._
 import ExecutionContext.Implicits.global
+import org.jaudiolibs.audioservers.AudioServerProvider
 	  
 	  
 class JAudioLibsInitializer {

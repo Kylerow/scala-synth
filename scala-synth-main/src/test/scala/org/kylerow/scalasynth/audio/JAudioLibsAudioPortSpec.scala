@@ -9,7 +9,6 @@ import scala.collection.mutable.Queue
 import scala.collection.mutable.MutableList
 import org.kylerow.scalasynth.Word
 
-
 @RunWith(classOf[JUnitRunner])
 class JAudioLibsAudioPortSpec 
 extends FlatSpec 

@@ -2,13 +2,22 @@ package org.kylerow.scalasynth.audio
 
 import javax.sound.sampled.AudioFormat
 import javax.sound.sampled.SourceDataLine
+import com.google.inject.Inject
 
 class AudioPortCreator {
 	var creatorFunctionMap = Map("JavaSound" -> (createJavaSoundAudioPort _))
+	@Inject var jAudioLibsInitializer :JAudioLibsInitializer = _	
 	
 	def create(portType :String, audioPortOptions :AudioPortOptions) :AudioPort = 
 	  creatorFunctionMap(portType)(audioPortOptions)
  
+	def createJAudioLibsAudioPort(audioPortOptions :AudioPortOptions) :AudioPort={
+	  val jAudioLibsAudioClient =  jAudioLibsInitializer.init 
+	  val jAudioLibsAudioPort = new JAudioLibsAudioPort()
+	  jAudioLibsAudioClient.setDataRetriever(jAudioLibsAudioPort.getCallbackFunc())
+	  jAudioLibsAudioPort
+	}
+	
 	def createJavaSoundAudioPort(audioPortOptions :AudioPortOptions) :AudioPort = {	
 	  val af = new AudioFormat(
  	    	        audioPortOptions.sampleRate.asInstanceOf[Float], 

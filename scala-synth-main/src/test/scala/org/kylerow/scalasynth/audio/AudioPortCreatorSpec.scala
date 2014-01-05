@@ -26,4 +26,19 @@ extends FlatSpec
     val result = audioPortCreator.create("test1",new AudioPortOptions)
     assert (result eq mockAudioPort)
   }
+  
+  "createJALAudioPort" should "Initialize JAL and set callback func on JAL interface" in{
+    // arrange
+    val mockJAudioLibsInitializer = mock[JAudioLibsInitializer]
+    val mockJAudioLibsAudioClient = mock[JAudioLibsAudioClient]
+    
+    (mockJAudioLibsInitializer.init _) expects() returns mockJAudioLibsAudioClient
+    (mockJAudioLibsAudioClient.setDataRetriever _) expects(*)
+    
+    val audioPortCreator = new AudioPortCreator;
+    audioPortCreator.jAudioLibsInitializer = mockJAudioLibsInitializer
+    
+    // act
+    audioPortCreator createJAudioLibsAudioPort(new AudioPortOptions)
+  }
 }

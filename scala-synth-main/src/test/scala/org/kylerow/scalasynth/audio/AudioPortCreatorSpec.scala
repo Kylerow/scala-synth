@@ -16,14 +16,14 @@ extends FlatSpec
     // arrange
     val mockAudioPort = mock[AudioPort]
     val mockCreateFunction = mockFunction[AudioPortOptions,AudioPort];
-    val map = Map("test1" -> mockCreateFunction)
+    val map = Map("test42" -> mockCreateFunction)
     (mockCreateFunction) expects(*) returns(mockAudioPort);
     
     val audioPortCreator = new AudioPortCreator();
     audioPortCreator.creatorFunctionMap = map;
     
     // act
-    val result = audioPortCreator.create("test1",new AudioPortOptions)
+    val result = audioPortCreator.create("test42",new AudioPortOptions)
     assert (result eq mockAudioPort)
   }
   
@@ -32,7 +32,7 @@ extends FlatSpec
     val mockJAudioLibsInitializer = mock[JAudioLibsInitializer]
     val mockJAudioLibsAudioClient = mock[JAudioLibsAudioClient]
     
-    (mockJAudioLibsInitializer.init _) expects() returns mockJAudioLibsAudioClient
+    (mockJAudioLibsInitializer.init _) expects("Test1",*) returns mockJAudioLibsAudioClient
     (mockJAudioLibsAudioClient.setDataRetriever _) expects(*)
     
     val audioPortCreator = new AudioPortCreator;

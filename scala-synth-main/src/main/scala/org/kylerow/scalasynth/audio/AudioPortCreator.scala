@@ -12,7 +12,7 @@ class AudioPortCreator {
 	  creatorFunctionMap(portType)(audioPortOptions)
  
 	def createJAudioLibsAudioPort(audioPortOptions :AudioPortOptions) :AudioPort={
-	  val jAudioLibsAudioClient =  jAudioLibsInitializer.init 
+	  val jAudioLibsAudioClient =  jAudioLibsInitializer.init("Test1",audioPortOptions)
 	  val jAudioLibsAudioPort = new JAudioLibsAudioPort()
 	  jAudioLibsAudioClient.setDataRetriever(jAudioLibsAudioPort.getCallbackFunc())
 	  jAudioLibsAudioPort

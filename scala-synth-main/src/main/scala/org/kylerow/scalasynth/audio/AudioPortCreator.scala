@@ -5,7 +5,9 @@ import javax.sound.sampled.SourceDataLine
 import com.google.inject.Inject
 
 class AudioPortCreator {
-	var creatorFunctionMap = Map("JavaSound" -> (createJavaSoundAudioPort _))
+	var creatorFunctionMap = Map(
+	    "JavaSound" -> (createJavaSoundAudioPort _),
+	    "JAudioLibs/Jack" -> (createJAudioLibsAudioPort _))
 	@Inject var jAudioLibsInitializer :JAudioLibsInitializer = _	
 	
 	def create(portType :String, audioPortOptions :AudioPortOptions) :AudioPort = 

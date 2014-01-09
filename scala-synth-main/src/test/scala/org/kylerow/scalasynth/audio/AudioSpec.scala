@@ -62,6 +62,7 @@ extends FlatSpec
     audio.senderOfRecord=stubModule
     future (audio runAudio stubModule )
     Thread.sleep(500);
+    audio.senderOfRecord=null
     
   }
   "RunAudio" should "not loop and not send to dataline" in {
